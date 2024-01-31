@@ -1,5 +1,7 @@
+import MyAppBar from "../components/MyAppBar";
+
 function Wallets() {
-  return <div>Wallets</div>;
+  return <MyAppBar></MyAppBar>;
 }
 
 export default Wallets;
