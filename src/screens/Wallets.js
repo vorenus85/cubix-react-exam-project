@@ -46,6 +46,7 @@ function Wallets() {
           {wallets.map((wallet) => {
             return (
               <Wallet
+                id={wallet.id}
                 key={wallet.id}
                 name={wallet.name}
                 description={wallet.description}

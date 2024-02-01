@@ -6,7 +6,11 @@ import {
   Button,
   Grid,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
 function Wallet({ id, balance, name, description }) {
+  const navigate = useNavigate();
+
   return (
     <Grid item xs={12} lg={3} md={4} sm={6}>
       <Card>
@@ -24,7 +28,7 @@ function Wallet({ id, balance, name, description }) {
             size="small"
             variant="contained"
             onClick={() => {
-              console.log("Go to wallet");
+              navigate(`/wallet/${id}`);
             }}
           >
             View
