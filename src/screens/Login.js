@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = yup.object({
   username: yup
@@ -18,25 +19,29 @@ const validationSchema = yup.object({
     .min(3, "Username should be of minimum 3 characters length")
     .max(20, "Username should be of maximum 20 characters length")
     .required("Username is required"),
-  password: yup.string().required("Password is required"),
+  password: yup.string("Enter your password").required("Password is required"),
 });
 
 function Login() {
   const [validFormData, setValidFormData] = useState(null);
+
+  const navigate = useNavigate();
+  const navigateToWallets = () => {
+    navigate("/");
+  };
 
   const updateValidFormData = (previousValue) => {
     setValidFormData({
       ...previousValue,
     });
     // call login backend endopint
+    navigateToWallets();
   };
 
   const formik = useFormik({
     initialValues: {
       username: "",
-      email: "",
       password: "",
-      confirmPassword: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
