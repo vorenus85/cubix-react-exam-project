@@ -8,12 +8,19 @@ import {
   Box,
   TextField,
   Button,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
+  FormHelperText,
 } from "@mui/material";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 
 const validationSchema = yup.object({
+  termsAndConditions: yup
+    .bool()
+    .oneOf([true], "You need to accept the terms and conditions"),
   username: yup
     .string("Enter you username")
     .min(3, "Username should be of minimum 3 characters length")
@@ -50,6 +57,7 @@ function Register() {
 
   const formik = useFormik({
     initialValues: {
+      termsAndConditions: false,
       username: "",
       password: "",
       confirmPassword: "",
@@ -115,6 +123,24 @@ function Register() {
               }
               margin="normal"
             />
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="termsAndConditions"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                }
+                label="I agree to the Terms and Conditions"
+              />
+              {formik.touched.termsAndConditions &&
+                !!formik.errors.termsAndConditions && (
+                  <FormHelperText error>
+                    You need to accept the terms and conditions
+                  </FormHelperText>
+                )}
+            </FormGroup>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12}>
                 <Button
