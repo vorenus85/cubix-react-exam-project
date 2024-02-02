@@ -9,11 +9,11 @@ import {
   TableCell,
   TableBody,
   Paper,
-  Button,
   Stack,
-  Link,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { UserButton } from "../components/UserButton";
+import { WalletButton } from "../components/WalletButton";
 
 function createData(user, wallets) {
   return { user, wallets };
@@ -78,8 +78,6 @@ const rows = [
   ),
 ];
 function Users() {
-  const navigate = useNavigate();
-
   // TODO use memoization for caching
 
   return (
@@ -105,16 +103,7 @@ function Users() {
                 >
                   <TableCell component="th" scope="row">
                     {row.user.map(({ name, id }) => (
-                      <Link
-                        key={id}
-                        component="button"
-                        variant="body2"
-                        onClick={() => {
-                          navigate(`/user/${id}`);
-                        }}
-                      >
-                        {name}
-                      </Link>
+                      <UserButton key={id} id={id} name={name} />
                     ))}
                   </TableCell>
                   <TableCell align="right">
@@ -124,16 +113,7 @@ function Users() {
                       style={{ justifyContent: "flex-end" }}
                     >
                       {row.wallets.map(({ name, id }) => (
-                        <Button
-                          size="small"
-                          key={id}
-                          variant="outlined"
-                          onClick={() => {
-                            navigate(`/wallet/${id}`);
-                          }}
-                        >
-                          {name}
-                        </Button>
+                        <WalletButton key={id} id={id} name={name} />
                       ))}
                     </Stack>
                   </TableCell>
