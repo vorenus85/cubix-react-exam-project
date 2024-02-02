@@ -70,7 +70,7 @@ function Register() {
 
   return (
     <div>
-      <MyAppBar />
+      <MyAppBar showLogin={true} />
       <Container maxWidth="xs" style={{ marginTop: "6rem" }}>
         <Paper style={{ padding: "1rem" }}>
           <Box component="form" onSubmit={formik.handleSubmit}>
