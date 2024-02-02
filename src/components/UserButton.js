@@ -7,6 +7,7 @@ export function UserButton({ id, name }) {
 
   return (
     <Button
+      style={{ textWrap: "nowrap" }}
       size="small"
       key={id}
       startIcon={<PersonIcon />}

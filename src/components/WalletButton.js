@@ -7,6 +7,7 @@ export function WalletButton({ id, name }) {
 
   return (
     <Button
+      style={{ textWrap: "nowrap" }}
       size="small"
       key={id}
       endIcon={<WalletIcon />}
