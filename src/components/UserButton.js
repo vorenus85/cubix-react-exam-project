@@ -10,6 +10,7 @@ export function UserButton({ id, name }) {
       style={{ textWrap: "nowrap" }}
       size="small"
       key={id}
+      variant="outlined"
       startIcon={<PersonIcon />}
       onClick={() => {
         navigate(`/user/${id}`);
