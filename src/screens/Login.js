@@ -40,8 +40,8 @@ function Login() {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
+      username: "test",
+      password: "test",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
