@@ -10,16 +10,14 @@ import {
   TableCell,
   TableBody,
   Grid,
-  Card,
-  CardContent,
   Button,
   Stack,
-  Avatar,
 } from "@mui/material";
-import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import { UserButton } from "../components/UserButton";
+import BalanceCard from "../components/BalanceCard";
+import UsersWithAccess from "../components/UsersWithAccess";
 
 const balance = 400;
 
@@ -86,42 +84,12 @@ function OneWallet() {
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={6} sm={3}>
-            <Card>
-              <CardContent>
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  spacing={2}
-                >
-                  <Stack>
-                    <Typography variant="body1">Balance</Typography>
-                    <Typography variant="h4">${balance}</Typography>
-                  </Stack>
-                  <Stack>
-                    <Avatar>
-                      <CurrencyExchangeIcon />
-                    </Avatar>
-                  </Stack>
-                </Stack>
-              </CardContent>
-            </Card>
+            <BalanceCard balance={balance} />
           </Grid>
         </Grid>
 
-        <Typography variant="h5" mb={2} mt={4}>
-          Users with access
-        </Typography>
-        <Stack
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-          spacing={2}
-        >
-          {usersWithAccess.map((user) => (
-            <UserButton id={user.id} key={user.id} name={user.name} />
-          ))}
-        </Stack>
+        <UsersWithAccess usersWithAccess={usersWithAccess} />
+
         <Stack
           direction="row"
           my={2}
