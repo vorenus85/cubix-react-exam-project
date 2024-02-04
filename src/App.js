@@ -22,7 +22,7 @@ function App() {
         <Route path="/login" exact element={<Login />}></Route>
         <Route path="/register" exact element={<Register />}></Route>
         <Route path="/wallet/:id" element={<OneWallet />} />
-        <Route path="/wallet/edit:id" element={<EditWallet />} />
+        <Route path="/wallet/edit/:id" element={<EditWallet />} />
         <Route path="/wallet/new" element={<NewWallet />} />
         <Route path="/users" exact element={<Users />}></Route>
         <Route path="/user/:id" exact element={<OneUser />}></Route>
