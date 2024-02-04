@@ -2,6 +2,8 @@ import MyAppBar from "../components/MyAppBar";
 import { Container, Typography, Grid } from "@mui/material";
 import Wallet from "../components/Wallet";
 import AddWallet from "../components/AddWallet";
+import AddNewTransactionModal from "../modals/AddNewTransactionModal";
+import { useState } from "react";
 
 const wallets = [
   {
@@ -31,8 +33,14 @@ const wallets = [
 ];
 
 function Wallets() {
+  const [open, setOpen] = useState(false);
+
   const AddNewWallet = () => {
-    console.log("trigger add new wallet modal");
+    setOpen(true);
+  };
+
+  const handleClose = (value) => {
+    setOpen(false);
   };
 
   return (
@@ -57,6 +65,7 @@ function Wallets() {
           <AddWallet addNew={() => AddNewWallet()}></AddWallet>
         </Grid>
       </Container>
+      <AddNewTransactionModal open={open} onClose={handleClose} />
     </div>
   );
 }

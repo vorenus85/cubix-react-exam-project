@@ -93,7 +93,7 @@ function Login() {
                   fullWidth
                   type="submit"
                 >
-                  Submit
+                  Login
                 </Button>
               </Grid>
             </Grid>
