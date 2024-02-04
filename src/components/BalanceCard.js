@@ -1,6 +1,21 @@
-import { Typography, Card, CardContent, Stack, Avatar } from "@mui/material";
+import {
+  Typography,
+  Card,
+  CardContent,
+  Stack,
+  Avatar,
+  Button,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import { useNavigate, useParams } from "react-router-dom";
 function BalanceCard({ balance }) {
+  let { id } = useParams();
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate(`/wallet/edit/${id}`);
+  };
   return (
     <Card>
       <CardContent>
@@ -19,6 +34,15 @@ function BalanceCard({ balance }) {
               <CurrencyExchangeIcon />
             </Avatar>
           </Stack>
+        </Stack>
+        <Stack>
+          <Button
+            variant="contained"
+            onClick={handleNavigate}
+            startIcon={<EditIcon />}
+          >
+            Edit
+          </Button>
         </Stack>
       </CardContent>
     </Card>
