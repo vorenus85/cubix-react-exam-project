@@ -8,6 +8,7 @@ import {
   Box,
   TextField,
   Button,
+  Stack,
 } from "@mui/material";
 import * as yup from "yup";
 import { useFormik } from "formik";
@@ -50,7 +51,7 @@ function Login() {
   });
 
   return (
-    <div>
+    <Stack>
       <MyAppBar showRegister={true} />
       <Container maxWidth="xs" style={{ marginTop: "6rem" }}>
         <Paper style={{ padding: "1rem" }}>
@@ -100,7 +101,7 @@ function Login() {
           </Box>
         </Paper>
       </Container>
-    </div>
+    </Stack>
   );
 }
 

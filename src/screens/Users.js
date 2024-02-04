@@ -97,7 +97,7 @@ function Users() {
   };
 
   return (
-    <div>
+    <Stack>
       <MyAppBar />
       <Container maxWidth="md">
         <Grid container mb={4} mt={6}>
@@ -175,7 +175,7 @@ function Users() {
           </Table>
         </TableContainer>
       </Container>
-    </div>
+    </Stack>
   );
 }
 

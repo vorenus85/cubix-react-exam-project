@@ -76,7 +76,7 @@ function OneWallet() {
   const navigate = useNavigate();
 
   return (
-    <div>
+    <Stack>
       <MyAppBar />
       <Container maxWidth="md">
         <Typography variant="h4" my={2} mt={6}>
@@ -138,7 +138,7 @@ function OneWallet() {
           </Table>
         </TableContainer>
       </Container>
-    </div>
+    </Stack>
   );
 }
 

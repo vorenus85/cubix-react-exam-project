@@ -9,6 +9,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Stack,
 } from "@mui/material";
 import moment from "moment";
 import WalletsWithAccess from "../components/WalletsWithAccess";
@@ -75,7 +76,7 @@ function OneUser() {
   };
 
   return (
-    <div>
+    <Stack>
       <MyAppBar />
       <Container maxWidth="md">
         <Typography variant="h4" my={2} mt={6}>
@@ -119,7 +120,7 @@ function OneUser() {
           </Table>
         </TableContainer>
       </Container>
-    </div>
+    </Stack>
   );
 }
 

@@ -12,6 +12,7 @@ import {
   FormControlLabel,
   Checkbox,
   FormHelperText,
+  Stack,
 } from "@mui/material";
 import * as yup from "yup";
 import { useFormik } from "formik";
@@ -69,7 +70,7 @@ function Register() {
   });
 
   return (
-    <div>
+    <Stack>
       <MyAppBar showLogin={true} />
       <Container maxWidth="xs" style={{ marginTop: "6rem" }}>
         <Paper style={{ padding: "1rem" }}>
@@ -156,7 +157,7 @@ function Register() {
           </Box>
         </Paper>
       </Container>
-    </div>
+    </Stack>
   );
 }
 
