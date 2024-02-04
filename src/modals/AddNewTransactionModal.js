@@ -24,6 +24,7 @@ function AddNewTransactionModal({ open, onClose }) {
 
   const handleClose = () => {
     onClose();
+    formik.resetForm();
   };
 
   const updateValidFormData = (previousValue) => {
