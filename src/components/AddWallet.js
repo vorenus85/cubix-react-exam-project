@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography, Grid } from "@mui/material";
+import { Card, CardContent, Typography, Grid, ButtonBase } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 function AddWallet({ addNew }) {
@@ -7,15 +7,17 @@ function AddWallet({ addNew }) {
 
   return (
     <Grid item xs={12} lg={3} md={4} sm={6}>
-      <Card onClick={addNew}>
-        <CardContent align="center">
-          <AddCircleOutlineIcon
-            fontSize="large"
-            color="primary"
-          ></AddCircleOutlineIcon>
-          <Typography variant="h5">Add new</Typography>
-        </CardContent>
-      </Card>
+      <ButtonBase style={{ width: "100%" }}>
+        <Card onClick={addNew} style={{ width: "100%" }}>
+          <CardContent align="center">
+            <AddCircleOutlineIcon
+              fontSize="large"
+              color="primary"
+            ></AddCircleOutlineIcon>
+            <Typography variant="h5">Add new</Typography>
+          </CardContent>
+        </Card>
+      </ButtonBase>
     </Grid>
   );
 }
