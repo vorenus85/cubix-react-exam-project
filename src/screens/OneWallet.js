@@ -12,12 +12,15 @@ import {
   Grid,
   Button,
   Stack,
+  IconButton,
 } from "@mui/material";
 
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import BalanceCard from "../components/BalanceCard";
 import UsersWithAccess from "../components/UsersWithAccess";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 const balance = 400;
 
@@ -118,6 +121,7 @@ function OneWallet() {
                 <TableCell>Amount</TableCell>
                 <TableCell>Description</TableCell>
                 <TableCell align="right">Date</TableCell>
+                <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -131,6 +135,14 @@ function OneWallet() {
                   <TableCell>{transaction.description}</TableCell>
                   <TableCell align="right">
                     {moment(transaction.date).format("YYYY.MM.DD.")}
+                  </TableCell>
+                  <TableCell align="right">
+                    <IconButton aria-label="delete">
+                      <DeleteIcon />
+                    </IconButton>
+                    <IconButton aria-label="delete" color="primary">
+                      <EditIcon />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
