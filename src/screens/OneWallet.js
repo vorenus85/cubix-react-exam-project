@@ -86,7 +86,7 @@ function OneWallet() {
           {walletName}
         </Typography>
         <Grid container spacing={2}>
-          <Grid item xs={6} sm={3}>
+          <Grid item xs={12} sm={6} md={3}>
             <BalanceCard balance={balance} />
           </Grid>
         </Grid>
@@ -96,6 +96,7 @@ function OneWallet() {
         <Stack
           direction="row"
           my={2}
+          mt={6}
           justifyContent="space-between"
           alignItems="center"
           spacing={2}

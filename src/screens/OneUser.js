@@ -92,7 +92,7 @@ function OneUser() {
           handleDelete={handleWalletDelete}
         />
 
-        <Typography variant="h5" my={2}>
+        <Typography variant="h5" my={2} mt={6}>
           Transactions
         </Typography>
         <TableContainer component={Paper}>
