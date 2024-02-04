@@ -1,9 +1,8 @@
 import MyAppBar from "../components/MyAppBar";
-import { Container, Typography, Grid } from "@mui/material";
+import { Container, Typography, Grid, Stack } from "@mui/material";
 import Wallet from "../components/Wallet";
 import AddWallet from "../components/AddWallet";
-import AddNewTransactionModal from "../modals/AddNewTransactionModal";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const wallets = [
   {
@@ -33,18 +32,10 @@ const wallets = [
 ];
 
 function Wallets() {
-  const [open, setOpen] = useState(false);
-
-  const AddNewWallet = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (value) => {
-    setOpen(false);
-  };
+  const navigate = useNavigate();
 
   return (
-    <div>
+    <Stack>
       <MyAppBar />
       <Container maxWidth="md">
         <Typography variant="h4" my={2} mt={6}>
@@ -62,11 +53,10 @@ function Wallets() {
               />
             );
           })}
-          <AddWallet addNew={() => AddNewWallet()}></AddWallet>
+          <AddWallet addNew={() => navigate("/wallet/new")}></AddWallet>
         </Grid>
       </Container>
-      <AddNewTransactionModal open={open} onClose={handleClose} />
-    </div>
+    </Stack>
   );
 }
 
