@@ -10,6 +10,7 @@ import {
   TableBody,
   Paper,
   Stack,
+  Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { UserButton } from "../components/UserButton";
@@ -93,6 +94,7 @@ function Users() {
               <TableRow>
                 <TableCell>Name</TableCell>
                 <TableCell align="right">Wallets</TableCell>
+                <TableCell align="right">Access</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -116,6 +118,11 @@ function Users() {
                         <WalletButton key={id} id={id} name={name} />
                       ))}
                     </Stack>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Button variant="outlined" color="secondary">
+                      Add
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
