@@ -15,15 +15,24 @@ function Wallet({ id, balance, name, description }) {
     <Grid item xs={12} lg={3} md={4} sm={6}>
       <Card>
         <CardContent>
-          <Typography variant="h4" mb={2}>
-            {name}
-          </Typography>
-          <Typography variant="body2" gutterBottom>
+          <Typography variant="h4">{name}</Typography>
+          <Typography variant="body2" gutterBottom mb={4}>
             {description}
           </Typography>
           <Typography variant="subtitle2">Balance: ${balance}</Typography>
         </CardContent>
-        <CardActions style={{ display: "flex", justifyContent: "flex-end" }}>
+        <CardActions
+          style={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <Button
+            size="small"
+            variant="contained"
+            onClick={() => {
+              navigate(`/wallet/edit/${id}`);
+            }}
+          >
+            Edit
+          </Button>
           <Button
             size="small"
             variant="contained"
