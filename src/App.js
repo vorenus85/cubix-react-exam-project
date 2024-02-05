@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -13,10 +13,11 @@ import Users from "./screens/Users";
 import OneUser from "./screens/OneUser";
 import EditWallet from "./screens/EditWallet";
 import NewWallet from "./screens/NewWallet";
+import Providers from "./Providers";
 
 function App() {
   return (
-    <BrowserRouter>
+    <Providers>
       <Routes>
         <Route path="/" exact element={<Wallets />}></Route>
         <Route path="/login" exact element={<Login />}></Route>
@@ -28,7 +29,7 @@ function App() {
         <Route path="/user/:id" exact element={<OneUser />}></Route>
         <Route path="*" exact element={<NotFoundScreen />} />
       </Routes>
-    </BrowserRouter>
+    </Providers>
   );
 }
 
