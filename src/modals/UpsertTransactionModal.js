@@ -19,7 +19,7 @@ const validationSchema = yup.object({
     .required("Wallet name is required"),
 });
 
-function AddNewTransactionModal({ open, onClose }) {
+function UpsertTransactionModal({ open, onClose }) {
   const [validFormData, setValidFormData] = useState(null);
 
   const handleClose = () => {
@@ -106,4 +106,4 @@ function AddNewTransactionModal({ open, onClose }) {
   );
 }
 
-export default AddNewTransactionModal;
+export default UpsertTransactionModal;
