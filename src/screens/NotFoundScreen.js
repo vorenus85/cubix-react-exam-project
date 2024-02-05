@@ -13,7 +13,7 @@ function NotFoundScreen() {
       <Typography variant="h4" component="h4" my={3}>
         Oops! Page not found
       </Typography>
-      <Typography variant="p" component="p" my={3}>
+      <Typography variant="body2" my={3}>
         Sorry, the page you're looking for doesn't exist. If you think something
         is broken, report a problem.
       </Typography>
