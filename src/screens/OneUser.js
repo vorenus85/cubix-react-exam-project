@@ -73,9 +73,9 @@ function OneUser() {
     navigate(`/wallet/${event}`);
   };
 
-  const handleWalletDelete = (event) => {
+  const handleDeleteAccess = (event) => {
     // confirm modal
-    console.log("handleWalletDelete", event);
+    console.log("handleDeleteAccess", event);
   };
 
   return (
@@ -89,7 +89,7 @@ function OneUser() {
         <WalletsWithAccess
           walletsWithAccess={walletsWithAccess}
           handleClick={handleWalletClick}
-          handleDelete={handleWalletDelete}
+          handleDelete={handleDeleteAccess}
         />
 
         <Typography variant="h5" my={2} mt={6}>

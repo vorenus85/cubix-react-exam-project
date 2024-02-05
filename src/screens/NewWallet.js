@@ -4,7 +4,6 @@ import {
   Typography,
   Container,
   TextField,
-  Box,
   Grid,
   Button,
 } from "@mui/material";
@@ -77,6 +76,7 @@ function NewWallet() {
                 onBlur={formik.handleBlur}
                 margin="normal"
                 multiline
+                rows={3}
               />
               <Grid container spacing={2}>
                 <Grid item xs={6}></Grid>

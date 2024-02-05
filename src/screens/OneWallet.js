@@ -16,11 +16,11 @@ import {
 } from "@mui/material";
 
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
 import BalanceCard from "../components/BalanceCard";
 import UsersWithAccess from "../components/UsersWithAccess";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate } from "react-router-dom";
 
 const balance = 400;
 
@@ -71,12 +71,24 @@ const transactions = [
 ];
 function OneWallet() {
   const walletName = "Wallet 1";
+  const navigate = useNavigate();
 
   const addNewTransaction = () => {
     console.log("Open add new transaction modal");
   };
 
-  const navigate = useNavigate();
+  const handleUserClick = (event) => {
+    navigate(`/user/${event}`);
+  };
+
+  const handleDeleteAccess = (event) => {
+    // confirm modal
+    console.log("handle delete access user to wallet", event);
+  };
+
+  const handleDeleteTransactionModal = (id) => {
+    console.log(id);
+  };
 
   return (
     <Stack>
@@ -91,7 +103,11 @@ function OneWallet() {
           </Grid>
         </Grid>
 
-        <UsersWithAccess usersWithAccess={usersWithAccess} />
+        <UsersWithAccess
+          usersWithAccess={usersWithAccess}
+          handleClick={handleUserClick}
+          handleDelete={handleDeleteAccess}
+        />
 
         <Stack
           direction="row"
@@ -138,7 +154,12 @@ function OneWallet() {
                     {moment(transaction.date).format("YYYY.MM.DD.")}
                   </TableCell>
                   <TableCell align="right">
-                    <IconButton aria-label="delete">
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() =>
+                        handleDeleteTransactionModal(transaction.id)
+                      }
+                    >
                       <DeleteIcon />
                     </IconButton>
                     <IconButton aria-label="delete" color="primary">
