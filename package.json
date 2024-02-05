@@ -39,6 +39,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.7",
     "@mui/material": "^5.15.7",
+    "axios": "^1.6.7",
     "formik": "^2.4.5",
     "moment": "^2.30.1",
     "yup": "^1.3.3"
