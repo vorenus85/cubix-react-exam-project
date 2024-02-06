@@ -8,8 +8,10 @@ import {
   Button,
 } from "@mui/material";
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React from "react";
 import * as yup from "yup";
+import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = yup.object({
   name: yup
@@ -19,16 +21,7 @@ const validationSchema = yup.object({
 });
 
 function NewWallet() {
-  const [validFormData, setValidFormData] = useState(null);
-
-  const updateValidFormData = (previousValue) => {
-    setValidFormData({
-      ...previousValue,
-    });
-
-    console.log("handle add new wallet");
-    formik.resetForm();
-  };
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -36,8 +29,21 @@ function NewWallet() {
       description: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      updateValidFormData(values);
+    onSubmit: (values, { setSubmitting, setFieldError }) => {
+      setSubmitting(true);
+      doApiCall(
+        AXIOS_METHOD.PUT,
+        "/wallet",
+        (data) => {
+          setSubmitting(false);
+          navigate(`/wallet/edit/${data.id}`);
+        },
+        (apiError) => {
+          setFieldError("name", apiError);
+          setSubmitting(false);
+        },
+        values
+      );
     },
   });
   return (
@@ -48,7 +54,7 @@ function NewWallet() {
           Add new wallet
         </Typography>
         <Grid container spacing={2}>
-          <Grid item xm={12} md={6}>
+          <Grid item sm={12} md={6}>
             <Stack component="form" onSubmit={formik.handleSubmit}>
               <TextField
                 size="small"
