@@ -17,12 +17,14 @@ import {
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
 
 const validationSchema = yup.object({
   termsAndConditions: yup
     .bool()
     .oneOf([true], "You need to accept the terms and conditions"),
-  username: yup
+  name: yup
     .string("Enter you username")
     .min(3, "Username should be of minimum 3 characters length")
     .max(20, "Username should be of maximum 20 characters length")
@@ -41,19 +43,11 @@ const validationSchema = yup.object({
 });
 
 function Register() {
-  const [validFormData, setValidFormData] = useState(null);
+  const { handleLoginResult } = useAuth();
 
   const navigate = useNavigate();
   const navigateToWallets = () => {
     navigate("/");
-  };
-
-  const updateValidFormData = (previousValue) => {
-    setValidFormData({
-      ...previousValue,
-    });
-    // call login backend endopint
-    navigateToWallets();
   };
 
   const formik = useFormik({
@@ -64,8 +58,34 @@ function Register() {
       confirmPassword: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      updateValidFormData(values);
+    onSubmit: (values, { setFieldError, setSubmitting }) => {
+      setSubmitting(true);
+      const onFailure = (apiError) => {
+        setFieldError("name", apiError);
+        setSubmitting(false);
+      };
+
+      doApiCall(
+        AXIOS_METHOD.POST,
+        "/reg",
+        (_unusedRegData) => {
+          doApiCall(
+            AXIOS_METHOD.POST,
+            "/login",
+            (data) => {
+              handleLoginResult(data);
+              setSubmitting(false);
+              navigateToWallets();
+            },
+            onFailure,
+            values
+          );
+
+          setSubmitting(false);
+        },
+        onFailure,
+        values
+      );
     },
   });
 
@@ -81,14 +101,14 @@ function Register() {
             <TextField
               variant="outlined"
               fullWidth
-              id="username"
-              name="username"
+              id="name"
+              name="name"
               label="Username"
-              value={formik.values.username}
+              value={formik.values.name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.username && !!formik.errors.username}
-              helperText={formik.touched.username && formik.errors.username}
+              error={formik.touched.name && !!formik.errors.name}
+              helperText={formik.touched.name && formik.errors.name}
               margin="normal"
             />
             <TextField
