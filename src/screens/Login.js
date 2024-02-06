@@ -13,10 +13,12 @@ import {
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
+import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
+import { useAuth } from "../hooks/useAuth";
 
 const validationSchema = yup.object({
-  username: yup
-    .string("Enter you username")
+  name: yup
+    .string("Enter your Username")
     .min(3, "Username should be of minimum 3 characters length")
     .max(20, "Username should be of maximum 20 characters length")
     .required("Username is required"),
@@ -24,29 +26,36 @@ const validationSchema = yup.object({
 });
 
 function Login() {
-  const [validFormData, setValidFormData] = useState(null);
-
   const navigate = useNavigate();
+
+  const { handleLoginResult } = useAuth();
+
   const navigateToWallets = () => {
     navigate("/");
   };
 
-  const updateValidFormData = (previousValue) => {
-    setValidFormData({
-      ...previousValue,
-    });
-    // call login backend endopint
-    navigateToWallets();
-  };
-
   const formik = useFormik({
     initialValues: {
-      username: "test",
+      name: "test",
       password: "test",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      updateValidFormData(values);
+    onSubmit: (values, { setFieldError, setSubmitting }) => {
+      setSubmitting(true);
+      doApiCall(
+        AXIOS_METHOD.POST,
+        "/login",
+        (data) => {
+          handleLoginResult(data);
+          setSubmitting(false);
+          navigateToWallets();
+        },
+        (apiError) => {
+          setFieldError("password", apiError);
+          setSubmitting(false);
+        },
+        values
+      );
     },
   });
 
@@ -62,14 +71,14 @@ function Login() {
             <TextField
               variant="outlined"
               fullWidth
-              id="username"
-              name="username"
+              id="name"
+              name="name"
               label="Username"
-              value={formik.values.username}
+              value={formik.values.name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.username && !!formik.errors.username}
-              helperText={formik.touched.username && formik.errors.username}
+              error={formik.touched.name && !!formik.errors.name}
+              helperText={formik.touched.name && formik.errors.name}
               margin="normal"
             />
             <TextField
