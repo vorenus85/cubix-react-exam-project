@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Navigate, Routes, Route } from "react-router-dom";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -14,19 +14,74 @@ import OneUser from "./screens/OneUser";
 import EditWallet from "./screens/EditWallet";
 import NewWallet from "./screens/NewWallet";
 import Providers from "./Providers";
+import { useAuth } from "./hooks/useAuth";
+
+function ProtectedPage({ children }) {
+  const { authToken } = useAuth();
+  if (authToken === false) {
+    return <Navigate to="/login"></Navigate>;
+  }
+
+  return children;
+}
 
 function App() {
   return (
     <Providers>
       <Routes>
-        <Route path="/" exact element={<Wallets />}></Route>
+        <Route
+          path="/"
+          exact
+          element={
+            <ProtectedPage>
+              <Wallets />
+            </ProtectedPage>
+          }
+        ></Route>
         <Route path="/login" exact element={<Login />}></Route>
         <Route path="/register" exact element={<Register />}></Route>
-        <Route path="/wallet/:id" element={<OneWallet />} />
-        <Route path="/wallet/edit/:id" element={<EditWallet />} />
-        <Route path="/wallet/new" element={<NewWallet />} />
-        <Route path="/users" exact element={<Users />}></Route>
-        <Route path="/user/:id" exact element={<OneUser />}></Route>
+        <Route
+          path="/wallet/:id"
+          element={
+            <ProtectedPage>
+              <OneWallet />
+            </ProtectedPage>
+          }
+        />
+        <Route
+          path="/wallet/edit/:id"
+          element={
+            <ProtectedPage>
+              <EditWallet />
+            </ProtectedPage>
+          }
+        />
+        <Route
+          path="/wallet/new"
+          element={
+            <ProtectedPage>
+              <NewWallet />
+            </ProtectedPage>
+          }
+        />
+        <Route
+          path="/users"
+          exact
+          element={
+            <ProtectedPage>
+              <Users />
+            </ProtectedPage>
+          }
+        ></Route>
+        <Route
+          path="/user/:id"
+          exact
+          element={
+            <ProtectedPage>
+              <OneUser />
+            </ProtectedPage>
+          }
+        ></Route>
         <Route path="*" exact element={<NotFoundScreen />} />
       </Routes>
     </Providers>
