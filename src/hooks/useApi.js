@@ -10,6 +10,12 @@ export const AXIOS_METHOD = {
   DELETE: "DELETE",
 };
 
+let authToken = false;
+
+export function setApiToken(newToken) {
+  authToken = newToken;
+}
+
 export function doApiCall(
   method,
   uri,
@@ -21,6 +27,8 @@ export function doApiCall(
     method,
     url: `${BASE_URL}${uri}`,
     data,
+    headers:
+      authToken !== false ? { Authorization: `Bearer ${authToken}` } : {},
   })
     .then((res) => {
       onSuccess(res.data);
