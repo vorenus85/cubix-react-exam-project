@@ -3,36 +3,28 @@ import { Container, Typography, Grid, Stack } from "@mui/material";
 import Wallet from "../components/Wallet";
 import AddWallet from "../components/AddWallet";
 import { useNavigate } from "react-router-dom";
-
-const wallets = [
-  {
-    id: 1,
-    balance: 150,
-    name: "9 A.",
-    description: "9 A. osztály tárcája",
-  },
-  {
-    id: 2,
-    balance: 50,
-    name: "9 B.",
-    description: "9 B. osztály tárcája",
-  },
-  {
-    id: 3,
-    balance: 100,
-    name: "10 A.",
-    description: "10 A. osztály tárcája",
-  },
-  {
-    id: 4,
-    balance: 20,
-    name: "10 B.",
-    description: "10 B. osztály tárcája",
-  },
-];
+import { useEffect, useState } from "react";
+import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
+import { useAuth } from "../hooks/useAuth";
 
 function Wallets() {
+  const [wallets, setWallets] = useState([]);
   const navigate = useNavigate();
+
+  const { sessionUser } = useAuth();
+
+  useEffect(() => {
+    doApiCall(
+      AXIOS_METHOD.GET,
+      "/wallets",
+      (data) => {
+        setWallets(data);
+      },
+      (apiError) => {
+        console.log(apiError);
+      }
+    );
+  }, []);
 
   return (
     <Stack>
