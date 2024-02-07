@@ -3,28 +3,22 @@ import { Container, Typography, Grid, Stack } from "@mui/material";
 import Wallet from "../components/Wallet";
 import AddWallet from "../components/AddWallet";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
-import { useAuth } from "../hooks/useAuth";
+import { AXIOS_METHOD, useApi } from "../hooks/useApi";
+import Loader from "../components/Loader";
 
 function Wallets() {
-  const [wallets, setWallets] = useState([]);
   const navigate = useNavigate();
 
-  const { sessionUser } = useAuth();
+  const [wallets, loading, error] = useApi(AXIOS_METHOD.GET, "/wallets");
 
-  useEffect(() => {
-    doApiCall(
-      AXIOS_METHOD.GET,
-      "/wallets",
-      (data) => {
-        setWallets(data);
-      },
-      (apiError) => {
-        console.log(apiError);
-      }
-    );
-  }, []);
+  if (loading === false && error !== false) {
+    navigate("/404");
+    return null;
+  }
+
+  if (loading === true) {
+    return <Loader />;
+  }
 
   return (
     <Stack>
