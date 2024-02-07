@@ -63,7 +63,7 @@ function OneWallet() {
   const [wallet, loading, error] = useApi(AXIOS_METHOD.GET, `/wallet/${id}`);
 
   if (loading === false && error !== false) {
-    navigate("*");
+    navigate("/404");
     return null;
   }
 

@@ -82,6 +82,7 @@ function App() {
             </ProtectedPage>
           }
         ></Route>
+        <Route path="/404" exact element={<NotFoundScreen />} />
         <Route path="*" exact element={<NotFoundScreen />} />
       </Routes>
     </Providers>
