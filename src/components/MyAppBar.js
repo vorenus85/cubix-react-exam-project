@@ -4,18 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function MyAppBar({ showLogin, showRegister }) {
   const navigate = useNavigate();
-  const navigateToWallets = () => {
-    navigate("/");
-  };
-  const navigateToUsers = () => {
-    navigate("/users");
-  };
-  const navigateToLogin = () => {
-    navigate("/login");
-  };
-  const navigateToRegister = () => {
-    navigate("/register");
-  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -29,21 +18,21 @@ export default function MyAppBar({ showLogin, showRegister }) {
             MyWallets
           </Typography>
           {showLogin && (
-            <Button onClick={() => navigateToLogin()} color="inherit">
+            <Button onClick={() => navigate("/login")} color="inherit">
               Login
             </Button>
           )}
           {showRegister && (
-            <Button onClick={() => navigateToRegister()} color="inherit">
+            <Button onClick={() => navigate("/register")} color="inherit">
               Register
             </Button>
           )}
           {!showLogin && !showRegister && (
             <Stack direction="row">
-              <Button onClick={() => navigateToWallets()} color="inherit">
+              <Button onClick={() => navigate("/")} color="inherit">
                 Wallets
               </Button>
-              <Button onClick={() => navigateToUsers()} color="inherit">
+              <Button onClick={() => navigate("/users")} color="inherit">
                 Users
               </Button>
             </Stack>
