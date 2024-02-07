@@ -20,7 +20,10 @@ import BalanceCard from "../components/BalanceCard";
 import UsersWithAccess from "../components/UsersWithAccess";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useModals, MODALS } from "../hooks/useModal";
+import { useEffect, useState } from "react";
+import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
 
 const balance = 400;
 
@@ -70,8 +73,23 @@ const transactions = [
   },
 ];
 function OneWallet() {
-  const walletName = "Wallet 1";
+  const [wallet, setWallet] = useState(false);
+  const { id } = useParams();
+
+  const { showModal } = useModals();
   const navigate = useNavigate();
+  useEffect(() => {
+    doApiCall(
+      AXIOS_METHOD.GET,
+      `/wallet/${id}`,
+      (data) => {
+        setWallet(data);
+      },
+      (apiError) => {
+        console.log(apiError);
+      }
+    );
+  }, [id, setWallet]);
 
   const addNewTransaction = () => {
     console.log("Open add new transaction modal");
@@ -94,17 +112,20 @@ function OneWallet() {
     <Stack>
       <MyAppBar />
       <Container maxWidth="md">
-        <Typography variant="h4" my={2} mt={6}>
-          {walletName}
+        <Typography variant="h4" mt={6}>
+          {wallet?.name}
+        </Typography>
+        <Typography variant="body2" mb={2}>
+          {wallet?.description}
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={3}>
-            <BalanceCard balance={balance} />
+            <BalanceCard balance={wallet?.balance} />
           </Grid>
         </Grid>
 
         <UsersWithAccess
-          usersWithAccess={usersWithAccess}
+          usersWithAccess={wallet?.access}
           handleClick={handleUserClick}
           handleDelete={handleDeleteAccess}
         />
@@ -156,13 +177,15 @@ function OneWallet() {
                   <TableCell align="right">
                     <IconButton
                       aria-label="delete"
-                      onClick={() =>
-                        handleDeleteTransactionModal(transaction.id)
-                      }
+                      onClick={() => showModal(MODALS.CONFIRM)}
                     >
                       <DeleteIcon />
                     </IconButton>
-                    <IconButton aria-label="delete" color="primary">
+                    <IconButton
+                      aria-label="edit"
+                      color="primary"
+                      onClick={() => showModal(MODALS.TRANSACTION)}
+                    >
                       <EditIcon />
                     </IconButton>
                   </TableCell>
