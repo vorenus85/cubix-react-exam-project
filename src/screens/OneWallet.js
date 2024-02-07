@@ -16,31 +16,14 @@ import {
 } from "@mui/material";
 
 import moment from "moment";
+import Loader from "../components/Loader";
 import BalanceCard from "../components/BalanceCard";
 import UsersWithAccess from "../components/UsersWithAccess";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate, useParams } from "react-router-dom";
 import { useModals, MODALS } from "../hooks/useModal";
-import { useEffect, useState } from "react";
-import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
-
-const balance = 400;
-
-const usersWithAccess = [
-  {
-    name: "User 1",
-    id: 1,
-  },
-  {
-    name: "User 2",
-    id: 2,
-  },
-  {
-    name: "User 3",
-    id: 3,
-  },
-];
+import { AXIOS_METHOD, useApi } from "../hooks/useApi";
 
 const transactions = [
   {
@@ -72,24 +55,21 @@ const transactions = [
     date: new Date("2024-01-15 16:32"),
   },
 ];
-function OneWallet() {
-  const [wallet, setWallet] = useState(false);
-  const { id } = useParams();
 
+function OneWallet() {
   const { showModal } = useModals();
   const navigate = useNavigate();
-  useEffect(() => {
-    doApiCall(
-      AXIOS_METHOD.GET,
-      `/wallet/${id}`,
-      (data) => {
-        setWallet(data);
-      },
-      (apiError) => {
-        console.log(apiError);
-      }
-    );
-  }, [id, setWallet]);
+  const { id } = useParams();
+  const [wallet, loading, error] = useApi(AXIOS_METHOD.GET, `/wallet/${id}`);
+
+  if (loading === false && error !== false) {
+    navigate("*");
+    return null;
+  }
+
+  if (loading === true) {
+    return <Loader />;
+  }
 
   const addNewTransaction = () => {
     console.log("Open add new transaction modal");
@@ -125,7 +105,7 @@ function OneWallet() {
         </Grid>
 
         <UsersWithAccess
-          usersWithAccess={wallet?.access}
+          usersWithAccess={wallet?.access || []}
           handleClick={handleUserClick}
           handleDelete={handleDeleteAccess}
         />
@@ -145,7 +125,7 @@ function OneWallet() {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => addNewTransaction()}
+              onClick={() => showModal(MODALS.TRANSACTION)}
             >
               Add new transaction
             </Button>
