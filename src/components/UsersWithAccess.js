@@ -1,5 +1,5 @@
 import { Typography, Stack, Chip } from "@mui/material";
-function UsersWithAccess({ usersWithAccess, handleClick, handleDelete }) {
+function UsersWithAccess({ usersWithAccess = [], handleClick, handleDelete }) {
   return (
     <Stack>
       <Typography variant="h5" mb={2} mt={4}>
@@ -13,10 +13,10 @@ function UsersWithAccess({ usersWithAccess, handleClick, handleDelete }) {
       >
         {usersWithAccess.map((user) => (
           <Chip
-            key={user.id}
-            label={user.name}
-            onClick={() => handleClick(user.id)}
-            onDelete={() => handleDelete(user.id)}
+            key={user?.id}
+            label={user?.name}
+            onClick={() => handleClick(user?.id)}
+            onDelete={() => handleDelete(user?.id)}
           />
         ))}
       </Stack>
