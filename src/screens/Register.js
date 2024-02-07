@@ -44,11 +44,7 @@ const validationSchema = yup.object({
 
 function Register() {
   const { handleLoginResult } = useAuth();
-
   const navigate = useNavigate();
-  const navigateToWallets = () => {
-    navigate("/");
-  };
 
   const formik = useFormik({
     initialValues: {
@@ -75,7 +71,7 @@ function Register() {
             (data) => {
               handleLoginResult(data);
               setSubmitting(false);
-              navigateToWallets();
+              navigate("/");
             },
             onFailure,
             values

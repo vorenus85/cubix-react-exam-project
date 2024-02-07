@@ -30,10 +30,6 @@ function Login() {
 
   const { handleLoginResult } = useAuth();
 
-  const navigateToWallets = () => {
-    navigate("/");
-  };
-
   const formik = useFormik({
     initialValues: {
       name: "test",
@@ -48,7 +44,7 @@ function Login() {
         (data) => {
           handleLoginResult(data);
           setSubmitting(false);
-          navigateToWallets();
+          navigate("/");
         },
         (apiError) => {
           setFieldError("password", apiError);
