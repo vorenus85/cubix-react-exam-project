@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
 
 const BASE_URL = "https://janos-perge-react-wallet.janos-perge.workers.dev";
 
@@ -21,7 +22,7 @@ export function doApiCall(
   uri,
   onSuccess,
   onFailure = false,
-  data = {}
+  data = undefined
 ) {
   axios({
     method,
@@ -40,4 +41,40 @@ export function doApiCall(
       }
       onFailure(err?.response?.data?.error, err);
     });
+}
+
+export function useApi(method, uri, postData = undefined, deps = []) {
+  const [data, setData] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const apiCallCallback = useCallback(
+    (apiPostData) => {
+      setLoading(true);
+      doApiCall(
+        method,
+        uri,
+        (responseData) => {
+          setTimeout(() => {
+            setData(responseData);
+            setError(false);
+            setLoading(false);
+          }, 250);
+        },
+        (errorMessage) => {
+          setError(errorMessage);
+          setData(false);
+          setLoading(false);
+        },
+        apiPostData
+      );
+    },
+    [method, setData, setError, setLoading, uri]
+  );
+
+  useEffect(() => {
+    apiCallCallback(postData);
+  }, [apiCallCallback, JSON.stringify(postData), ...deps]);
+
+  return [data, loading, error, apiCallCallback];
 }
