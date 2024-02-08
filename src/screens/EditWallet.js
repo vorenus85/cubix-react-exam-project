@@ -13,7 +13,7 @@ import React, { useState } from "react";
 import * as yup from "yup";
 import UsersWithAccess from "../components/UsersWithAccess";
 import { useNavigate, useParams } from "react-router-dom";
-import { AXIOS_METHOD, useApi } from "../hooks/useApi";
+import { AXIOS_METHOD, doApiCall, useApi } from "../hooks/useApi";
 import { useModals, MODALS } from "../hooks/useModal";
 import Loader from "../components/Loader";
 
@@ -96,6 +96,24 @@ function EditWallet() {
 
   const handleUserClick = (event) => {
     navigate(`/user/${event}`);
+  };
+
+  const onDeleteWallet = () => {
+    showModal(MODALS.CONFIRM, {
+      message: "Are you sure you want to delete this wallet?",
+      onConfirmed: () => {
+        doApiCall(
+          AXIOS_METHOD.DELETE,
+          `/wallet/${id}`,
+          (_unusedResponse) => {
+            navigate("/");
+          },
+          (apiError) => {
+            console.log(apiError);
+          }
+        );
+      },
+    });
   };
 
   const handleDeleteAccess = (event) => {
@@ -217,6 +235,12 @@ function EditWallet() {
           handleClick={handleUserClick}
           handleDelete={handleDeleteAccess}
         />
+        <Typography variant="h5" my={2} mt={6}>
+          Danger Zone
+        </Typography>
+        <Button color="error" variant="contained" onClick={onDeleteWallet}>
+          Delete wallet
+        </Button>
       </Container>
     </Stack>
   );
