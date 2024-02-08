@@ -69,21 +69,8 @@ function EditWallet() {
     }
   );
 
-  /*
-  * // TODO rájönni hogy kellene megoldani?!
-  *
-  if (loading === false && error !== false) {
-    navigate("/404");
-    return null;
-  }
-
-  
-  if (loading === true) {
-    return <Loader />;
-  }
-  */
-
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
       name: wallet?.name,
       description: wallet?.description,
@@ -139,6 +126,15 @@ function EditWallet() {
 
     console.log("handle edit  wallet");
   };
+
+  if (loading === false && error !== false) {
+    navigate("/404");
+    return null;
+  }
+
+  if (loading === true) {
+    return <Loader />;
+  }
 
   return (
     <Stack>
