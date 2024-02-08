@@ -7,50 +7,42 @@ import {
   Button,
   Grid,
   IconButton,
+  InputAdornment,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
 const validationSchema = yup.object({
-  name: yup
-    .string("Enter wallet name")
-    .min(3, "Wallet should be of minimum 3 characters length")
-    .required("Wallet name is required"),
+  amount: yup.number().required("Transaction amount is required"),
 });
 
-function UpsertTransactionModal({ open, onClose }) {
-  const [validFormData, setValidFormData] = useState(null);
-
-  const handleClose = () => {
-    onClose();
-    formik.resetForm();
-  };
-
-  const updateValidFormData = (previousValue) => {
-    setValidFormData({
-      ...previousValue,
-    });
-  };
-
+export default function UpsertTransactionModal({
+  onClose,
+  onConfirmed,
+  id,
+  amount,
+  title,
+}) {
   const formik = useFormik({
     initialValues: {
-      name: "",
-      description: "",
+      amount: amount,
+      title: title,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      updateValidFormData(values);
+      onConfirmed(values);
+      onClose();
     },
   });
 
   return (
-    <Dialog onClose={handleClose} open={open}>
+    <Dialog onClose={onClose} open={true}>
       <DialogTitle align="center">
-        Add new Wallet
+        {id ? <div>Edit transaction</div> : <div>Add new transaction</div>}
         <IconButton
           aria-label="close"
-          onClick={handleClose}
+          onClick={onClose}
           sx={{
             position: "absolute",
             right: 8,
@@ -69,29 +61,33 @@ function UpsertTransactionModal({ open, onClose }) {
         <TextField
           size="small"
           variant="outlined"
+          type="number"
           fullWidth
-          id="name"
-          name="name"
-          label="Name"
-          value={formik.values.name}
+          id="amount"
+          name="amount"
+          label="Amount"
+          value={formik.values.amount}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.name && !!formik.errors.name}
-          helperText={formik.touched.name && formik.errors.name}
+          error={formik.touched.amount && !!formik.errors.amount}
+          helperText={formik.touched.amount && formik.errors.amount}
           margin="normal"
+          InputProps={{
+            startAdornment: <InputAdornment position="start">$</InputAdornment>,
+          }}
         />
+
         <TextField
           size="small"
           variant="outlined"
           fullWidth
-          id="description"
-          name="description"
-          label="Description"
-          value={formik.values.description}
+          id="title"
+          name="title"
+          label="Title of transaction"
+          value={formik.values.title}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           margin="normal"
-          multiline
         />
         <Grid container spacing={2}>
           <Grid item xs={6}></Grid>
@@ -105,5 +101,3 @@ function UpsertTransactionModal({ open, onClose }) {
     </Dialog>
   );
 }
-
-export default UpsertTransactionModal;

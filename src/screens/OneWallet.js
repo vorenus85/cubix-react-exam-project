@@ -61,18 +61,34 @@ function OneWallet() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [wallet, loading, error] = useApi(AXIOS_METHOD.GET, `/wallet/${id}`);
+  const [walletTransactions, transactionsLoading, transactionsError] = useApi(
+    AXIOS_METHOD.POST,
+    `/transactions`,
+    {
+      wallet_id: id,
+      limit: 5,
+      cursor: "",
+    }
+  );
 
-  if (loading === false && error !== false) {
+  if (
+    (loading === false && error !== false) ||
+    (transactionsLoading === false && transactionsError !== false)
+  ) {
     navigate("/404");
     return null;
   }
 
-  if (loading === true) {
+  if (loading === true || transactionsLoading === true) {
     return <Loader />;
   }
 
-  const addNewTransaction = () => {
-    console.log("Open add new transaction modal");
+  const onTransactionCreate = () => {
+    showModal(MODALS.TRANSACTION, {
+      onConfirmed: (values) => {
+        console.log("On transaction add", values);
+      },
+    });
   };
 
   const handleUserClick = (event) => {
@@ -80,13 +96,36 @@ function OneWallet() {
   };
 
   const handleDeleteAccess = (event) => {
+    showModal(MODALS.CONFIRM, {
+      message:
+        "Are you sure you want to delete this user access to this wallet?",
+      onConfirmed: () => {
+        console.log("Delete user access to this wallet, then refresh module");
+      },
+    });
     // confirm modal
     console.log("handle delete access user to wallet", event);
   };
 
-  const handleDeleteTransactionModal = (id) => {
-    console.log(id);
-  };
+  function onTransactionDelete(id) {
+    showModal(MODALS.CONFIRM, {
+      message: "Are you sure you want to delete this transaction?",
+      onConfirmed: () => {
+        console.log("Delete transaction, then refresh module");
+      },
+    });
+  }
+
+  function onTransactionEdit({ id, amount, title }) {
+    showModal(MODALS.TRANSACTION, {
+      id,
+      amount,
+      title,
+      onConfirmed: (values) => {
+        console.log("On transaction edit", values);
+      },
+    });
+  }
 
   return (
     <Stack>
@@ -125,7 +164,7 @@ function OneWallet() {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => showModal(MODALS.TRANSACTION)}
+              onClick={onTransactionCreate}
             >
               Add new transaction
             </Button>
@@ -143,28 +182,34 @@ function OneWallet() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {transactions.map((transaction) => (
+              {walletTransactions?.transactions.map((transaction) => (
                 <TableRow
-                  key={transaction.id}
+                  key={transaction?.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell>{transaction.name}</TableCell>
-                  <TableCell>${transaction.amount}</TableCell>
-                  <TableCell>{transaction.description}</TableCell>
+                  <TableCell>{transaction?.created_by?.name}</TableCell>
+                  <TableCell>${transaction?.amount}</TableCell>
+                  <TableCell>{transaction?.title}</TableCell>
                   <TableCell align="right">
-                    {moment(transaction.date).format("YYYY.MM.DD.")}
+                    {moment(transaction?.created_at).format("YYYY.MM.DD.")}
                   </TableCell>
                   <TableCell align="right">
                     <IconButton
                       aria-label="delete"
-                      onClick={() => showModal(MODALS.CONFIRM)}
+                      onClick={() => onTransactionDelete(transaction?.id)}
                     >
                       <DeleteIcon />
                     </IconButton>
                     <IconButton
                       aria-label="edit"
                       color="primary"
-                      onClick={() => showModal(MODALS.TRANSACTION)}
+                      onClick={() =>
+                        onTransactionEdit({
+                          id: transaction?.id,
+                          amount: transaction?.amount,
+                          title: transaction?.title,
+                        })
+                      }
                     >
                       <EditIcon />
                     </IconButton>
