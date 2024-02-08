@@ -14,6 +14,7 @@ import * as yup from "yup";
 import UsersWithAccess from "../components/UsersWithAccess";
 import { useNavigate, useParams } from "react-router-dom";
 import { AXIOS_METHOD, useApi } from "../hooks/useApi";
+import { useModals, MODALS } from "../hooks/useModal";
 import Loader from "../components/Loader";
 
 const allUsers = [
@@ -51,6 +52,7 @@ const validationSchema = yup.object({
 });
 
 function EditWallet() {
+  const { showModal } = useModals();
   const [setValidFormData] = useState(null);
   const [user, setUser] = useState("");
   const navigate = useNavigate();
@@ -97,8 +99,15 @@ function EditWallet() {
   };
 
   const handleDeleteAccess = (event) => {
-    // confirm modal
-    console.log("handle delete access user to wallet", event);
+    showModal(MODALS.CONFIRM, {
+      message: "Are you sure you want to delete access to this wallet?",
+      onConfirmed: () => {
+        console.log(
+          "Delete user access to this wallet, then refresh module",
+          event
+        );
+      },
+    });
   };
 
   const handleGrantAccess = () => {
