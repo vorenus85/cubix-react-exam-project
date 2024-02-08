@@ -14,9 +14,10 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import WalletsWithAccess from "../components/WalletsWithAccess";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { AXIOS_METHOD, useApi } from "../hooks/useApi";
 
 const userName = "User 1";
 
@@ -68,6 +69,9 @@ const transactions = [
 
 function OneUser() {
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  const [userData, loading, error] = useApi(AXIOS_METHOD.GET, `/user/${id}`);
 
   const handleWalletClick = (event) => {
     navigate(`/wallet/${event}`);
@@ -83,7 +87,7 @@ function OneUser() {
       <MyAppBar />
       <Container maxWidth="md">
         <Typography variant="h4" my={2} mt={6}>
-          {userName}
+          {userData?.name}
         </Typography>
 
         <WalletsWithAccess
