@@ -19,73 +19,28 @@ import {
 import { UserButton } from "../components/UserButton";
 import { WalletButton } from "../components/WalletButton";
 import { useState } from "react";
+import { AXIOS_METHOD, useApi } from "../hooks/useApi";
+import { useNavigate } from "react-router-dom";
+import Loader from "../components/Loader";
 
-function createData(user, wallets) {
-  return { user, wallets };
-}
-
-const rows = [
-  createData(
-    [{ name: "User 1", id: 1 }],
-    [
-      {
-        name: "Wallet 1",
-        id: 1,
-      },
-      {
-        name: "Wallet 2",
-        id: 2,
-      },
-      {
-        name: "Wallet 3",
-        id: 3,
-      },
-      {
-        name: "Wallet 4",
-        id: 4,
-      },
-    ]
-  ),
-  createData(
-    [{ name: "User 2", id: 2 }],
-    [
-      {
-        name: "Wallet 2",
-        id: 2,
-      },
-      {
-        name: "Wallet 4",
-        id: 4,
-      },
-    ]
-  ),
-  createData(
-    [{ name: "User 3", id: 3 }],
-    [
-      {
-        name: "Wallet 4",
-        id: 4,
-      },
-    ]
-  ),
-  createData(
-    [{ name: "User 4", id: 4 }],
-    [
-      {
-        name: "Wallet 1",
-        id: 1,
-      },
-      {
-        name: "Wallet 4",
-        id: 4,
-      },
-    ]
-  ),
-];
 function Users() {
-  // TODO use memoization for caching
+  const navigate = useNavigate();
 
   const [search, setSearch] = useState();
+  const [users, loading, error] = useApi(AXIOS_METHOD.POST, `/user/list`, {
+    prefix: "",
+    limit: 10,
+    cursor: "",
+  });
+
+  if (loading === false && error !== false) {
+    navigate("/404");
+    return null;
+  }
+
+  if (loading === true) {
+    return <Loader />;
+  }
 
   const handleSearchUser = (event) => {
     const searchParam = event.target.value;
@@ -95,6 +50,10 @@ function Users() {
       console.log("search user", event.target.value);
     }
   };
+
+  function onAddAccess(id) {
+    console.log(id);
+  }
 
   return (
     <Stack>
@@ -143,27 +102,15 @@ function Users() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
+              {users?.users.map((user) => (
                 <TableRow
-                  key={row.user[0].id}
+                  key={user.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {row.user.map(({ name, id }) => (
-                      <UserButton key={id} id={id} name={name} />
-                    ))}
+                    <UserButton id={user.id} name={user.name} />
                   </TableCell>
-                  <TableCell align="right">
-                    <Stack
-                      spacing={2}
-                      direction="row"
-                      style={{ justifyContent: "flex-end" }}
-                    >
-                      {row.wallets.map(({ name, id }) => (
-                        <WalletButton key={id} id={id} name={name} />
-                      ))}
-                    </Stack>
-                  </TableCell>
+                  <TableCell>TODO</TableCell>
                   <TableCell align="right">
                     <Button variant="outlined" color="secondary">
                       Add
