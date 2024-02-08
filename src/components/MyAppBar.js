@@ -1,9 +1,11 @@
 import * as React from "react";
 import { AppBar, Box, Toolbar, Typography, Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 export default function MyAppBar({ showLogin, showRegister }) {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -34,6 +36,9 @@ export default function MyAppBar({ showLogin, showRegister }) {
               </Button>
               <Button onClick={() => navigate("/users")} color="inherit">
                 Users
+              </Button>
+              <Button onClick={logout} color="inherit">
+                Logout
               </Button>
             </Stack>
           )}
