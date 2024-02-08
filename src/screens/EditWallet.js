@@ -12,7 +12,9 @@ import { useFormik } from "formik";
 import React, { useState } from "react";
 import * as yup from "yup";
 import UsersWithAccess from "../components/UsersWithAccess";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { AXIOS_METHOD, useApi } from "../hooks/useApi";
+import Loader from "../components/Loader";
 
 const allUsers = [
   {
@@ -41,21 +43,6 @@ const allUsers = [
   },
 ];
 
-const usersWithAccess = [
-  {
-    name: "User 1",
-    id: 1,
-  },
-  {
-    name: "User 2",
-    id: 2,
-  },
-  {
-    name: "User 3",
-    id: 3,
-  },
-];
-
 const validationSchema = yup.object({
   name: yup
     .string("Enter wallet name")
@@ -64,8 +51,47 @@ const validationSchema = yup.object({
 });
 
 function EditWallet() {
-  const [user, setUser] = React.useState("");
+  const [setValidFormData] = useState(null);
+  const [user, setUser] = useState("");
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  const [wallet, loading, error] = useApi(AXIOS_METHOD.GET, `/wallet/${id}`);
+  const [users, usersLoading, usersError] = useApi(
+    AXIOS_METHOD.POST,
+    `/user/list`,
+    {
+      prefix: "",
+      limit: 10,
+      cursor: "",
+    }
+  );
+
+  /*
+  * // TODO rájönni hogy kellene megoldani?!
+  *
+  if (loading === false && error !== false) {
+    navigate("/404");
+    return null;
+  }
+
+  
+  if (loading === true) {
+    return <Loader />;
+  }
+  */
+
+  const formik = useFormik({
+    initialValues: {
+      name: wallet?.name,
+      description: wallet?.description,
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      updateValidFormData(values);
+    },
+  });
+
   const handleUserClick = (event) => {
     navigate(`/user/${event}`);
   };
@@ -75,24 +101,9 @@ function EditWallet() {
     console.log("handle delete access user to wallet", event);
   };
 
-  // todo get wallet data
-  const wallet = {
-    id: 1,
-    name: "9. A",
-    description: "9. A osztály tárcája",
-    access: [
-      {
-        id: "ODgyNzYzNzEzNTAyNzQzNw",
-        name: "test",
-      },
-    ],
-  };
-
   const handleGrantAccess = () => {
     console.log("grant access to ", user);
   };
-
-  const [validFormData, setValidFormData] = useState(null);
 
   const updateValidFormData = (previousValue) => {
     setValidFormData({
@@ -102,17 +113,6 @@ function EditWallet() {
     console.log("handle edit  wallet");
   };
 
-  const formik = useFormik({
-    initialValues: {
-      name: wallet.name,
-      description: wallet.description,
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      updateValidFormData(values);
-    },
-  });
-
   return (
     <Stack>
       <MyAppBar />
@@ -121,7 +121,7 @@ function EditWallet() {
           Edit wallet
         </Typography>
         <Grid container spacing={2}>
-          <Grid item xm={12} md={6}>
+          <Grid item xs={12} md={6}>
             <Stack component="form" onSubmit={formik.handleSubmit}>
               <TextField
                 size="small"
@@ -166,7 +166,7 @@ function EditWallet() {
               </Grid>
             </Stack>
           </Grid>
-          <Grid item xm={12} md={6}></Grid>
+          <Grid item xs={12} md={6}></Grid>
         </Grid>
 
         <Typography variant="h5" my={2} mt={6}>
@@ -179,8 +179,10 @@ function EditWallet() {
           spacing={2}
         >
           <Stack>
+            {/*
+              // todo async autocomplete: https://codesandbox.io/p/sandbox/asynchronous-material-demo-forked-70eff?file=%2Fdemo.js
+            */}
             <Autocomplete
-              value={user}
               onChange={(event, newValue) => {
                 setUser(newValue);
               }}
@@ -202,7 +204,7 @@ function EditWallet() {
         </Stack>
 
         <UsersWithAccess
-          usersWithAccess={usersWithAccess}
+          usersWithAccess={wallet.access || []}
           handleClick={handleUserClick}
           handleDelete={handleDeleteAccess}
         />
