@@ -25,37 +25,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useModals, MODALS } from "../hooks/useModal";
 import { AXIOS_METHOD, useApi } from "../hooks/useApi";
 
-const transactions = [
-  {
-    id: 1,
-    name: "User 1",
-    amount: 100,
-    description: "Lorem ipsum dolot sit amet",
-    date: new Date("2024-02-02 18:15"),
-  },
-  {
-    id: 2,
-    name: "User 2",
-    amount: 150,
-    description: "Lorem ipsum dolot sit amet",
-    date: new Date("2024-01-29 09:20"),
-  },
-  {
-    id: 3,
-    name: "User 3",
-    amount: 50,
-    description: "Lorem ipsum dolot sit amet",
-    date: new Date("2024-01-27 7:45"),
-  },
-  {
-    id: 4,
-    name: "User 1",
-    amount: 100,
-    description: "Lorem ipsum dolot sit amet",
-    date: new Date("2024-01-15 16:32"),
-  },
-];
-
 function OneWallet() {
   const { showModal } = useModals();
   const navigate = useNavigate();
@@ -100,18 +69,19 @@ function OneWallet() {
       message:
         "Are you sure you want to delete this user access to this wallet?",
       onConfirmed: () => {
-        console.log("Delete user access to this wallet, then refresh module");
+        console.log(
+          "Delete user access to this wallet, then refresh module",
+          event
+        );
       },
     });
-    // confirm modal
-    console.log("handle delete access user to wallet", event);
   };
 
   function onTransactionDelete(id) {
     showModal(MODALS.CONFIRM, {
       message: "Are you sure you want to delete this transaction?",
       onConfirmed: () => {
-        console.log("Delete transaction, then refresh module");
+        console.log("Delete transaction, then refresh module", id);
       },
     });
   }
