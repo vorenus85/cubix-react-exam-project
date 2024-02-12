@@ -97,7 +97,6 @@ function Users() {
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
-                <TableCell align="right">Wallets</TableCell>
                 <TableCell align="right">Access</TableCell>
               </TableRow>
             </TableHead>
@@ -110,7 +109,6 @@ function Users() {
                   <TableCell component="th" scope="row">
                     <UserButton id={user.id} name={user.name} />
                   </TableCell>
-                  <TableCell>TODO</TableCell>
                   <TableCell align="right">
                     <Button variant="outlined" color="secondary">
                       Add
