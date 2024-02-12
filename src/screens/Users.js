@@ -10,14 +10,12 @@ import {
   TableBody,
   Paper,
   Stack,
-  Button,
   Grid,
   Card,
   CardContent,
   TextField,
 } from "@mui/material";
 import { UserButton } from "../components/UserButton";
-import { WalletButton } from "../components/WalletButton";
 import { useState } from "react";
 import { AXIOS_METHOD, useApi } from "../hooks/useApi";
 import { useNavigate } from "react-router-dom";
@@ -50,10 +48,6 @@ function Users() {
       console.log("search user", event.target.value);
     }
   };
-
-  function onAddAccess(id) {
-    console.log(id);
-  }
 
   return (
     <Stack>
@@ -97,7 +91,6 @@ function Users() {
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
-                <TableCell align="right">Access</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -108,11 +101,6 @@ function Users() {
                 >
                   <TableCell component="th" scope="row">
                     <UserButton id={user.id} name={user.name} />
-                  </TableCell>
-                  <TableCell align="right">
-                    <Button variant="outlined" color="secondary">
-                      Add
-                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
