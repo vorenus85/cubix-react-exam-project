@@ -16,33 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AXIOS_METHOD, doApiCall, useApi } from "../hooks/useApi";
 import { useModals, MODALS } from "../hooks/useModal";
 import Loader from "../components/Loader";
-
-const allUsers = [
-  {
-    label: "User 1",
-    id: 1,
-  },
-  {
-    label: "User 2",
-    id: 2,
-  },
-  {
-    label: "User 3",
-    id: 3,
-  },
-  {
-    label: "User 4",
-    id: 4,
-  },
-  {
-    label: "User 5",
-    id: 5,
-  },
-  {
-    label: "User 6",
-    id: 6,
-  },
-];
+import { AddAccessToWallet } from "../components/AddAccessToWallet";
 
 const validationSchema = yup.object({
   name: yup
@@ -54,7 +28,7 @@ const validationSchema = yup.object({
 function EditWallet() {
   const { showModal } = useModals();
   const [setValidFormData] = useState(null);
-  const [user, setUser] = useState("");
+
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -113,10 +87,6 @@ function EditWallet() {
         );
       },
     });
-  };
-
-  const handleGrantAccess = () => {
-    console.log("grant access to ", user);
   };
 
   const updateValidFormData = (previousValue) => {
@@ -192,39 +162,7 @@ function EditWallet() {
           <Grid item xs={12} md={6}></Grid>
         </Grid>
 
-        <Typography variant="h5" my={2} mt={6}>
-          Add user to wallet
-        </Typography>
-        <Stack
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-          spacing={2}
-        >
-          <Stack>
-            {/*
-              // todo async autocomplete: https://codesandbox.io/p/sandbox/asynchronous-material-demo-forked-70eff?file=%2Fdemo.js
-            */}
-            <Autocomplete
-              onChange={(event, newValue) => {
-                setUser(newValue);
-              }}
-              disablePortal
-              id="combo-box-demo"
-              options={allUsers}
-              sx={{ width: 300 }}
-              size="small"
-              renderInput={(params) => (
-                <TextField {...params} label="start typing to find user..." />
-              )}
-            />
-          </Stack>
-          <Stack>
-            <Button variant="outlined" onClick={handleGrantAccess}>
-              Add to wallet
-            </Button>
-          </Stack>
-        </Stack>
+        <AddAccessToWallet />
 
         <UsersWithAccess
           usersWithAccess={wallet.access || []}
