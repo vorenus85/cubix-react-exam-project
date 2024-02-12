@@ -24,6 +24,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate, useParams } from "react-router-dom";
 import { useModals, MODALS } from "../hooks/useModal";
 import { AXIOS_METHOD, useApi } from "../hooks/useApi";
+import { AddAccessToWallet } from "../components/AddAccessToWallet";
 
 function OneWallet() {
   const { showModal } = useModals();
@@ -112,7 +113,7 @@ function OneWallet() {
             <BalanceCard balance={wallet?.balance} />
           </Grid>
         </Grid>
-
+        <AddAccessToWallet />
         <UsersWithAccess
           usersWithAccess={wallet?.access || []}
           handleClick={handleUserClick}
