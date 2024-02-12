@@ -25,11 +25,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useModals, MODALS } from "../hooks/useModal";
 import { AXIOS_METHOD, useApi } from "../hooks/useApi";
 import { AddAccessToWallet } from "../components/AddAccessToWallet";
+import { WalletInfoCard } from "../components/WalletInfoCard";
+import { useAuth } from "../hooks/useAuth";
 
 function OneWallet() {
   const { showModal } = useModals();
   const navigate = useNavigate();
   const { id } = useParams();
+  const { sessionUser, isAdmin } = useAuth();
+  const isSameUser = (id) => {
+    return sessionUser.id === id;
+  };
   const [wallet, loading, error] = useApi(AXIOS_METHOD.GET, `/wallet/${id}`);
   const [walletTransactions, transactionsLoading, transactionsError] = useApi(
     AXIOS_METHOD.POST,
@@ -102,13 +108,15 @@ function OneWallet() {
     <Stack>
       <MyAppBar />
       <Container maxWidth="md">
-        <Typography variant="h4" mt={6}>
-          {wallet?.name}
-        </Typography>
-        <Typography variant="body2" mb={2}>
-          {wallet?.description}
-        </Typography>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} mt={6}>
+          <Grid item xs={12} sm={6} md={6}>
+            <WalletInfoCard
+              id={id}
+              name={wallet?.name}
+              description={wallet?.description}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}></Grid>
           <Grid item xs={12} sm={6} md={3}>
             <BalanceCard balance={wallet?.balance} />
           </Grid>
@@ -165,25 +173,29 @@ function OneWallet() {
                     {moment(transaction?.created_at).format("YYYY.MM.DD.")}
                   </TableCell>
                   <TableCell align="right">
-                    <IconButton
-                      aria-label="delete"
-                      onClick={() => onTransactionDelete(transaction?.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                    <IconButton
-                      aria-label="edit"
-                      color="primary"
-                      onClick={() =>
-                        onTransactionEdit({
-                          id: transaction?.id,
-                          amount: transaction?.amount,
-                          title: transaction?.title,
-                        })
-                      }
-                    >
-                      <EditIcon />
-                    </IconButton>
+                    {(isAdmin || isSameUser(transaction?.created_by?.id)) && (
+                      <div>
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => onTransactionDelete(transaction?.id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                        <IconButton
+                          aria-label="edit"
+                          color="primary"
+                          onClick={() =>
+                            onTransactionEdit({
+                              id: transaction?.id,
+                              amount: transaction?.amount,
+                              title: transaction?.title,
+                            })
+                          }
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </div>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
