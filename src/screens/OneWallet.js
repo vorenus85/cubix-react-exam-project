@@ -35,7 +35,7 @@ function OneWallet() {
     `/transactions`,
     {
       wallet_id: id,
-      limit: 5,
+      limit: 10,
       cursor: "",
     }
   );
