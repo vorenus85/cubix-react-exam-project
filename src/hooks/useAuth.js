@@ -7,12 +7,14 @@ AuthContext.displayName = "AuthContext";
 export function AuthContextProvider({ children }) {
   const [authToken, setAuthToken] = useState(false);
   const [sessionUser, setSessionUser] = useState({});
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const handleLoginResult = useCallback(
     (loginResult) => {
       setApiToken(loginResult.token);
       setAuthToken(loginResult.token);
       setSessionUser(loginResult.user);
+      setIsAdmin(loginResult.user.name === "admin" ? true : false);
     },
     [setAuthToken, setSessionUser]
   );
@@ -23,7 +25,7 @@ export function AuthContextProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ authToken, sessionUser, handleLoginResult, logout }}
+      value={{ authToken, sessionUser, handleLoginResult, isAdmin, logout }}
     >
       {children}
     </AuthContext.Provider>

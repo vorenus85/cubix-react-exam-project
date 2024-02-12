@@ -7,9 +7,11 @@ import {
   Grid,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 function Wallet({ id, balance, name, description }) {
   const navigate = useNavigate();
+  const { isAdmin } = useAuth();
 
   return (
     <Grid item xs={12} lg={3} md={4} sm={6}>
@@ -24,15 +26,17 @@ function Wallet({ id, balance, name, description }) {
         <CardActions
           style={{ display: "flex", justifyContent: "space-between" }}
         >
-          <Button
-            size="small"
-            variant="contained"
-            onClick={() => {
-              navigate(`/wallet/edit/${id}`);
-            }}
-          >
-            Edit
-          </Button>
+          {isAdmin && (
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={() => {
+                navigate(`/wallet/edit/${id}`);
+              }}
+            >
+              Edit
+            </Button>
+          )}
           <Button
             size="small"
             variant="contained"

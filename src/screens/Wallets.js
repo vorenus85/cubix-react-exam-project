@@ -1,13 +1,14 @@
 import MyAppBar from "../components/MyAppBar";
-import { Container, Typography, Grid, Stack } from "@mui/material";
+import { Container, Typography, Grid, Stack, Button } from "@mui/material";
 import Wallet from "../components/Wallet";
-import AddWallet from "../components/AddWallet";
 import { useNavigate } from "react-router-dom";
 import { AXIOS_METHOD, useApi } from "../hooks/useApi";
 import Loader from "../components/Loader";
+import { useAuth } from "../hooks/useAuth";
 
 function Wallets() {
   const navigate = useNavigate();
+  const { isAdmin } = useAuth();
 
   const [wallets, loading, error] = useApi(AXIOS_METHOD.GET, "/wallets");
 
@@ -24,9 +25,29 @@ function Wallets() {
     <Stack>
       <MyAppBar />
       <Container maxWidth="md">
-        <Typography variant="h4" my={2} mt={6}>
-          Wallets
-        </Typography>
+        <Stack
+          direction="row"
+          my={2}
+          mt={6}
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={2}
+        >
+          <Stack>
+            <Typography variant="h4">Wallets</Typography>
+          </Stack>
+          {isAdmin && (
+            <Stack>
+              <Button
+                variant="contained"
+                onClick={() => navigate("/wallet/new")}
+              >
+                Add new wallet
+              </Button>
+            </Stack>
+          )}
+        </Stack>
+
         <Grid container spacing={2}>
           {wallets.map((wallet) => {
             return (
@@ -39,7 +60,6 @@ function Wallets() {
               />
             );
           })}
-          <AddWallet addNew={() => navigate("/wallet/new")}></AddWallet>
         </Grid>
       </Container>
     </Stack>
