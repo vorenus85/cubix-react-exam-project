@@ -44,7 +44,7 @@ export function AddAccessToWallet() {
   return (
     <Stack>
       <Typography variant="h5" my={2} mt={6}>
-        Add user to wallet
+        Add access to wallet
       </Typography>
       <Stack
         direction="row"
