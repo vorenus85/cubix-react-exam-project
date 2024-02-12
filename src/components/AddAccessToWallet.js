@@ -63,10 +63,10 @@ export function AddAccessToWallet() {
             disablePortal
             id="combo-box-demo"
             options={allUsers}
-            sx={{ width: 300 }}
+            sx={{ width: 200 }}
             size="small"
             renderInput={(params) => (
-              <TextField {...params} label="start typing to find user..." />
+              <TextField {...params} label="start typing..." />
             )}
           />
         </Stack>
