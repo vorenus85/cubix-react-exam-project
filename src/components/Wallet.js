@@ -5,6 +5,7 @@ import {
   CardActions,
   Button,
   Grid,
+  Stack,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
@@ -26,26 +27,30 @@ function Wallet({ id, balance, name, description }) {
         <CardActions
           style={{ display: "flex", justifyContent: "space-between" }}
         >
-          {isAdmin && (
+          <Stack>
+            {isAdmin && (
+              <Button
+                size="small"
+                variant="outlined"
+                onClick={() => {
+                  navigate(`/wallet/edit/${id}`);
+                }}
+              >
+                Edit
+              </Button>
+            )}
+          </Stack>
+          <Stack>
             <Button
               size="small"
-              variant="outlined"
+              variant="contained"
               onClick={() => {
-                navigate(`/wallet/edit/${id}`);
+                navigate(`/wallet/${id}`);
               }}
             >
-              Edit
+              View
             </Button>
-          )}
-          <Button
-            size="small"
-            variant="contained"
-            onClick={() => {
-              navigate(`/wallet/${id}`);
-            }}
-          >
-            View
-          </Button>
+          </Stack>
         </CardActions>
       </Card>
     </Grid>
