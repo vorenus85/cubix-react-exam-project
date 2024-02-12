@@ -32,8 +32,8 @@ function Login() {
 
   const formik = useFormik({
     initialValues: {
-      name: "test",
-      password: "test",
+      name: "userParent1",
+      password: "userParent1",
     },
     validationSchema: validationSchema,
     onSubmit: (values, { setFieldError, setSubmitting }) => {
