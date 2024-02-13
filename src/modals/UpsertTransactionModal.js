@@ -12,8 +12,16 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useAuth } from "../hooks/useAuth";
 
 const validationSchema = yup.object({
+  amount: yup
+    .number()
+    .positive("Amount must be positive number")
+    .required("Transaction amount is required"),
+});
+
+const validationSchemaForAdmin = yup.object({
   amount: yup.number().required("Transaction amount is required"),
 });
 
@@ -24,12 +32,14 @@ export default function UpsertTransactionModal({
   amount,
   title,
 }) {
+  const { isAdmin } = useAuth();
+
   const formik = useFormik({
     initialValues: {
       amount: amount,
       title: title,
     },
-    validationSchema: validationSchema,
+    validationSchema: isAdmin ? validationSchemaForAdmin : validationSchema,
     onSubmit: (values) => {
       onConfirmed(values);
       onClose();
