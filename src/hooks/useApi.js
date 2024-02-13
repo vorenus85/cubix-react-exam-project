@@ -35,7 +35,7 @@ export function doApiCall(
       onSuccess(res.data);
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
       if (onFailure === false) {
         return;
       }
@@ -55,11 +55,9 @@ export function useApi(method, uri, postData = undefined, deps = []) {
         method,
         uri,
         (responseData) => {
-          setTimeout(() => {
-            setData(responseData);
-            setError(false);
-            setLoading(false);
-          }, 250);
+          setData(responseData);
+          setError(false);
+          setLoading(false);
         },
         (errorMessage) => {
           setError(errorMessage);

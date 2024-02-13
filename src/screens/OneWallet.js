@@ -66,8 +66,6 @@ function OneWallet() {
   };
 
   const editTransaction = ({ id, title, amount }) => {
-    console.log({ id, title, amount });
-
     doApiCall(
       AXIOS_METHOD.PATCH,
       `/transaction/${id}`,
@@ -79,8 +77,8 @@ function OneWallet() {
         console.log(apiError);
       },
       {
-        ...title,
-        ...amount,
+        title,
+        amount,
       }
     );
   };

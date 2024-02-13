@@ -15,20 +15,18 @@ export default function useTransactions(wallet_id = "", limit = 5) {
         AXIOS_METHOD.POST,
         "/transactions",
         (responseData) => {
-          setTimeout(() => {
-            setTransactions((oldTransactions) => {
-              if (oldTransactions === false || newCursor === "") {
-                console.log("első 5");
-                return responseData?.transactions;
-              }
-              console.log("hozzáfűz");
-              return [...oldTransactions, ...responseData?.transactions];
-            });
-            setCursor(responseData?.cursor);
-            setHasMore(responseData?.has_more);
-            setError(false);
-            setLoading(false);
-          }, 250);
+          setTransactions((oldTransactions) => {
+            if (oldTransactions === false || newCursor === "") {
+              console.log("első 5");
+              return responseData?.transactions;
+            }
+            console.log("hozzáfűz");
+            return [...oldTransactions, ...responseData?.transactions];
+          });
+          setCursor(responseData?.cursor);
+          setHasMore(responseData?.has_more);
+          setError(false);
+          setLoading(false);
         },
         (errorMessage) => {
           setError(errorMessage);
