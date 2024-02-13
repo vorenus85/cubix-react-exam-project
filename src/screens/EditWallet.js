@@ -102,7 +102,7 @@ function EditWallet() {
   }
 
   return (
-    <Stack>
+    <Stack pb={5}>
       <MyAppBar />
       {loading === true && (
         <Grid item xs={12}>

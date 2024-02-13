@@ -160,7 +160,7 @@ function OneWallet() {
   }
 
   return (
-    <Stack>
+    <Stack pb={5}>
       <MyAppBar />
       {loading === true ||
         (transactionsLoading === true && (

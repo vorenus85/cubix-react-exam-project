@@ -47,7 +47,7 @@ function NewWallet() {
     },
   });
   return (
-    <Stack>
+    <Stack pb={5}>
       <MyAppBar />
       <Container maxWidth="md">
         <Typography variant="h4" my={2} mt={6}>
