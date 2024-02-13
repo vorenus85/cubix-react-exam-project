@@ -23,10 +23,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate, useParams } from "react-router-dom";
 import { useModals, MODALS } from "../hooks/useModal";
-import { AXIOS_METHOD, useApi } from "../hooks/useApi";
+import { AXIOS_METHOD, doApiCall, useApi } from "../hooks/useApi";
 import { AddAccessToWallet } from "../components/AddAccessToWallet";
 import { WalletInfoCard } from "../components/WalletInfoCard";
 import { useAuth } from "../hooks/useAuth";
+import { useCallback } from "react";
+import useTransactions from "../hooks/useTransactions";
 
 function OneWallet() {
   const { showModal } = useModals();
@@ -36,33 +38,79 @@ function OneWallet() {
   const isSameUser = (id) => {
     return sessionUser.id === id;
   };
-  const [wallet, loading, error] = useApi(AXIOS_METHOD.GET, `/wallet/${id}`);
-  const [walletTransactions, transactionsLoading, transactionsError] = useApi(
-    AXIOS_METHOD.POST,
-    `/transactions`,
-    {
-      wallet_id: id,
-      limit: 10,
-      cursor: "",
-    }
+  const [wallet, loading, error, reloadWallet] = useApi(
+    AXIOS_METHOD.GET,
+    `/wallet/${id}`
   );
 
-  if (
-    (loading === false && error !== false) ||
-    (transactionsLoading === false && transactionsError !== false)
-  ) {
-    navigate("/404");
-    return null;
-  }
+  const [
+    transactions,
+    transactionsLoading,
+    transactionsError,
+    onMore,
+    hasMore,
+    resetList,
+  ] = useTransactions(id, "5");
 
-  if (loading === true || transactionsLoading === true) {
-    return <Loader />;
-  }
+  const deleteTransaction = (id) => {
+    doApiCall(
+      AXIOS_METHOD.DELETE,
+      `/transaction/${id}`,
+      (_unusedResponse) => {
+        resetList();
+        reloadWallet();
+      },
+      (apiError) => {
+        console.log(apiError);
+      }
+    );
+  };
+
+  const editTransaction = ({ id, title, amount }) => {
+    console.log({ id, title, amount });
+
+    doApiCall(
+      AXIOS_METHOD.PATCH,
+      `/transaction/${id}`,
+      (_unusedResponse) => {
+        resetList();
+        reloadWallet();
+      },
+      (apiError) => {
+        console.log(apiError);
+      },
+      {
+        ...title,
+        ...amount,
+      }
+    );
+  };
+
+  const addTransaction = (transactionData) => {
+    const data = {
+      wallet_id: id,
+      ...transactionData,
+      extra: {},
+    };
+
+    doApiCall(
+      AXIOS_METHOD.PUT,
+      `/transactions`,
+      (_unusedResponse) => {
+        resetList();
+        reloadWallet();
+      },
+      (apiError) => {
+        console.log(apiError);
+      },
+      data
+    );
+  };
 
   const onTransactionCreate = () => {
     showModal(MODALS.TRANSACTION, {
       onConfirmed: (values) => {
-        console.log("On transaction add", values);
+        addTransaction(values);
       },
     });
   };
@@ -88,7 +136,7 @@ function OneWallet() {
     showModal(MODALS.CONFIRM, {
       message: "Are you sure you want to delete this transaction?",
       onConfirmed: () => {
-        console.log("Delete transaction, then refresh module", id);
+        deleteTransaction(id);
       },
     });
   }
@@ -98,10 +146,22 @@ function OneWallet() {
       id,
       amount,
       title,
-      onConfirmed: (values) => {
-        console.log("On transaction edit", values);
+      onConfirmed: ({ amount, title }) => {
+        editTransaction({ id, amount, title });
       },
     });
+  }
+
+  if (
+    (loading === false && error !== false) ||
+    (transactionsLoading === false && transactionsError !== false)
+  ) {
+    navigate("/404");
+    return null;
+  }
+
+  if (loading === true || transactionsLoading === true) {
+    return <Loader />;
   }
 
   return (
@@ -161,7 +221,7 @@ function OneWallet() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {walletTransactions?.transactions.map((transaction) => (
+              {transactions?.map((transaction) => (
                 <TableRow
                   key={transaction?.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -202,6 +262,13 @@ function OneWallet() {
             </TableBody>
           </Table>
         </TableContainer>
+        <Grid item xs={12}>
+          {hasMore && !loading && (
+            <Button onClick={onMore} fullWidth>
+              Load more
+            </Button>
+          )}
+        </Grid>
       </Container>
     </Stack>
   );
