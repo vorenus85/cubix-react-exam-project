@@ -115,49 +115,51 @@ function EditWallet() {
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
-            <Stack component="form" onSubmit={formik.handleSubmit}>
-              <TextField
-                size="small"
-                variant="outlined"
-                fullWidth
-                id="name"
-                name="name"
-                label="Name"
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.name && !!formik.errors.name}
-                helperText={formik.touched.name && formik.errors.name}
-                margin="normal"
-              />
-              <TextField
-                size="small"
-                variant="outlined"
-                fullWidth
-                id="description"
-                name="description"
-                label="Description"
-                value={formik.values.description}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                margin="normal"
-                multiline
-                rows={3}
-              />
-              <Grid container spacing={2}>
-                <Grid item xs={6}></Grid>
-                <Grid item xs={6}>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    fullWidth
-                    type="submit"
-                  >
-                    Save
-                  </Button>
+            {loading === false && wallet && (
+              <Stack component="form" onSubmit={formik.handleSubmit}>
+                <TextField
+                  size="small"
+                  variant="outlined"
+                  fullWidth
+                  id="name"
+                  name="name"
+                  label="Name"
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.name && !!formik.errors.name}
+                  helperText={formik.touched.name && formik.errors.name}
+                  margin="normal"
+                />
+                <TextField
+                  size="small"
+                  variant="outlined"
+                  fullWidth
+                  id="description"
+                  name="description"
+                  label="Description"
+                  value={formik.values.description}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  margin="normal"
+                  multiline
+                  rows={3}
+                />
+                <Grid container spacing={2}>
+                  <Grid item xs={6}></Grid>
+                  <Grid item xs={6}>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      fullWidth
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Stack>
+              </Stack>
+            )}
           </Grid>
           <Grid item xs={12} md={6}></Grid>
         </Grid>
