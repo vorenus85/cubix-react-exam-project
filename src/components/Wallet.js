@@ -15,7 +15,7 @@ function Wallet({ id, balance, name, description }) {
   const { isAdmin } = useAuth();
 
   return (
-    <Grid item xs={12} lg={3} md={4} sm={6}>
+    <Grid item xs={12} md={4} sm={6}>
       <Card>
         <CardContent>
           <Typography variant="h4">{name}</Typography>
