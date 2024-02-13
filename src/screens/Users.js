@@ -14,12 +14,12 @@ import {
   Card,
   CardContent,
   TextField,
+  LinearProgress,
 } from "@mui/material";
 import { UserButton } from "../components/UserButton";
 import { useState } from "react";
 import { AXIOS_METHOD, useApi } from "../hooks/useApi";
 import { useNavigate } from "react-router-dom";
-import Loader from "../components/Loader";
 
 function Users() {
   const navigate = useNavigate();
@@ -31,15 +31,6 @@ function Users() {
     cursor: "",
   });
 
-  if (loading === false && error !== false) {
-    navigate("/404");
-    return null;
-  }
-
-  if (loading === true) {
-    return <Loader />;
-  }
-
   const handleSearchUser = (event) => {
     const searchParam = event.target.value;
 
@@ -49,9 +40,19 @@ function Users() {
     }
   };
 
+  if (loading === false && error !== false) {
+    navigate("/404");
+    return null;
+  }
+
   return (
     <Stack>
       <MyAppBar />
+      {loading === true && (
+        <Grid item xs={12}>
+          <LinearProgress />
+        </Grid>
+      )}
       <Container maxWidth="md">
         <Grid container mb={4} mt={6}>
           <Grid item xs={12} sm={6}>
@@ -94,16 +95,18 @@ function Users() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users?.users.map((user) => (
-                <TableRow
-                  key={user.id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    <UserButton id={user.id} name={user.name} />
-                  </TableCell>
-                </TableRow>
-              ))}
+              {loading === false &&
+                users &&
+                users?.users.map((user) => (
+                  <TableRow
+                    key={user.id}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      <UserButton id={user.id} name={user.name} />
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>

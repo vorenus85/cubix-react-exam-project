@@ -12,6 +12,7 @@ import {
   TableBody,
   Stack,
   IconButton,
+  LinearProgress,
 } from "@mui/material";
 import moment from "moment";
 import WalletsWithAccess from "../components/WalletsWithAccess";
@@ -101,13 +102,25 @@ function OneUser() {
     });
   }
 
+  if (loading === false && error !== false) {
+    navigate("/404");
+    return null;
+  }
+
   return (
     <Stack>
       <MyAppBar />
+      {loading === true && (
+        <Grid item xs={12}>
+          <LinearProgress />
+        </Grid>
+      )}
       <Container maxWidth="md">
         <Grid container spacing={2} mt={6}>
           <Grid item xs={12} sm={6} md={6}>
-            <UserInfoCard name={userData?.name} />
+            {loading === false && userData && (
+              <UserInfoCard name={userData?.name} />
+            )}
           </Grid>
         </Grid>
 

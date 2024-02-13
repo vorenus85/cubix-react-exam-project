@@ -13,10 +13,10 @@ import {
   Button,
   Stack,
   IconButton,
+  LinearProgress,
 } from "@mui/material";
 
 import moment from "moment";
-import Loader from "../components/Loader";
 import BalanceCard from "../components/BalanceCard";
 import UsersWithAccess from "../components/UsersWithAccess";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -27,7 +27,6 @@ import { AXIOS_METHOD, doApiCall, useApi } from "../hooks/useApi";
 import { AddAccessToWallet } from "../components/AddAccessToWallet";
 import { WalletInfoCard } from "../components/WalletInfoCard";
 import { useAuth } from "../hooks/useAuth";
-import { useCallback } from "react";
 import useTransactions from "../hooks/useTransactions";
 
 function OneWallet() {
@@ -160,33 +159,39 @@ function OneWallet() {
     return null;
   }
 
-  if (loading === true || transactionsLoading === true) {
-    return <Loader />;
-  }
-
   return (
     <Stack>
       <MyAppBar />
+      {loading === true ||
+        (transactionsLoading === true && (
+          <Grid item xs={12}>
+            <LinearProgress />
+          </Grid>
+        ))}
       <Container maxWidth="md">
         <Grid container spacing={2} mt={6}>
           <Grid item xs={12} sm={6} md={6}>
-            <WalletInfoCard
-              id={id}
-              name={wallet?.name}
-              description={wallet?.description}
-            />
+            {loading === false && (
+              <WalletInfoCard
+                id={id}
+                name={wallet?.name}
+                description={wallet?.description}
+              />
+            )}
           </Grid>
           <Grid item xs={12} sm={6} md={3}></Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <BalanceCard balance={wallet?.balance} />
+            {loading === false && <BalanceCard balance={wallet?.balance} />}
           </Grid>
         </Grid>
         <AddAccessToWallet />
-        <UsersWithAccess
-          usersWithAccess={wallet?.access || []}
-          handleClick={handleUserClick}
-          handleDelete={handleDeleteAccess}
-        />
+        {loading === false && (
+          <UsersWithAccess
+            usersWithAccess={wallet?.access || []}
+            handleClick={handleUserClick}
+            handleDelete={handleDeleteAccess}
+          />
+        )}
 
         <Stack
           direction="row"
@@ -221,44 +226,46 @@ function OneWallet() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {transactions?.map((transaction) => (
-                <TableRow
-                  key={transaction?.id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell>{transaction?.created_by?.name}</TableCell>
-                  <TableCell>${transaction?.amount}</TableCell>
-                  <TableCell>{transaction?.title}</TableCell>
-                  <TableCell align="right">
-                    {moment(transaction?.created_at).format("YYYY.MM.DD.")}
-                  </TableCell>
-                  <TableCell align="right">
-                    {(isAdmin || isSameUser(transaction?.created_by?.id)) && (
-                      <div>
-                        <IconButton
-                          aria-label="delete"
-                          onClick={() => onTransactionDelete(transaction?.id)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                        <IconButton
-                          aria-label="edit"
-                          color="primary"
-                          onClick={() =>
-                            onTransactionEdit({
-                              id: transaction?.id,
-                              amount: transaction?.amount,
-                              title: transaction?.title,
-                            })
-                          }
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </div>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {transactionsLoading === false &&
+                transactions &&
+                transactions?.map((transaction) => (
+                  <TableRow
+                    key={transaction?.id}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell>{transaction?.created_by?.name}</TableCell>
+                    <TableCell>${transaction?.amount}</TableCell>
+                    <TableCell>{transaction?.title}</TableCell>
+                    <TableCell align="right">
+                      {moment(transaction?.created_at).format("YYYY.MM.DD.")}
+                    </TableCell>
+                    <TableCell align="right">
+                      {(isAdmin || isSameUser(transaction?.created_by?.id)) && (
+                        <div>
+                          <IconButton
+                            aria-label="delete"
+                            onClick={() => onTransactionDelete(transaction?.id)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                          <IconButton
+                            aria-label="edit"
+                            color="primary"
+                            onClick={() =>
+                              onTransactionEdit({
+                                id: transaction?.id,
+                                amount: transaction?.amount,
+                                title: transaction?.title,
+                              })
+                            }
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </div>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>

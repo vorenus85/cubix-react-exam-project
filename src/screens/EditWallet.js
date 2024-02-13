@@ -6,7 +6,7 @@ import {
   TextField,
   Grid,
   Button,
-  Autocomplete,
+  LinearProgress,
 } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useState } from "react";
@@ -15,7 +15,6 @@ import UsersWithAccess from "../components/UsersWithAccess";
 import { useNavigate, useParams } from "react-router-dom";
 import { AXIOS_METHOD, doApiCall, useApi } from "../hooks/useApi";
 import { useModals, MODALS } from "../hooks/useModal";
-import Loader from "../components/Loader";
 import { AddAccessToWallet } from "../components/AddAccessToWallet";
 
 const validationSchema = yup.object({
@@ -102,13 +101,14 @@ function EditWallet() {
     return null;
   }
 
-  if (loading === true) {
-    return <Loader />;
-  }
-
   return (
     <Stack>
       <MyAppBar />
+      {loading === true && (
+        <Grid item xs={12}>
+          <LinearProgress />
+        </Grid>
+      )}
       <Container maxWidth="md">
         <Typography variant="h4" my={2} mt={6}>
           Edit wallet
@@ -164,11 +164,13 @@ function EditWallet() {
 
         <AddAccessToWallet />
 
-        <UsersWithAccess
-          usersWithAccess={wallet.access || []}
-          handleClick={handleUserClick}
-          handleDelete={handleDeleteAccess}
-        />
+        {loading === false && wallet && (
+          <UsersWithAccess
+            usersWithAccess={wallet.access || []}
+            handleClick={handleUserClick}
+            handleDelete={handleDeleteAccess}
+          />
+        )}
         <Typography variant="h5" my={2} mt={6}>
           Danger Zone
         </Typography>
