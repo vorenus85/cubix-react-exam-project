@@ -5,6 +5,7 @@
   "author": "Janos Perge",
   "dependencies": {
     "@fontsource/roboto": "^5.0.8",
+    "notistack": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.1",
@@ -23,7 +24,7 @@
     ],
     "rules": {
       "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn" 
+      "react-hooks/exhaustive-deps": "warn"
     }
   },
   "browserslist": {

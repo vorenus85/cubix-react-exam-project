@@ -188,17 +188,16 @@ function OneWallet() {
       <Container maxWidth="md">
         <Grid container spacing={2} mt={6}>
           <Grid item xs={12} sm={6} md={6}>
-            {loading === false && (
-              <WalletInfoCard
-                id={id}
-                name={wallet?.name}
-                description={wallet?.description}
-              />
-            )}
+            <WalletInfoCard
+              loading={loading}
+              id={id}
+              name={wallet?.name}
+              description={wallet?.description}
+            />
           </Grid>
           <Grid item xs={12} sm={6} md={3}></Grid>
           <Grid item xs={12} sm={6} md={3}>
-            {loading === false && <BalanceCard balance={wallet?.balance} />}
+            <BalanceCard balance={wallet?.balance} />
           </Grid>
         </Grid>
         <AddAccessToWallet walletId={id} onAddAccess={onAddAccess} />

@@ -8,8 +8,10 @@ import {
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
+import { useSnackbar } from "notistack";
 
 export function AddAccessToWallet({ walletId, onAddAccess }) {
+  const { enqueueSnackbar } = useSnackbar();
   const [selectedUser, setSelectedUser] = useState("");
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
@@ -56,6 +58,7 @@ export function AddAccessToWallet({ walletId, onAddAccess }) {
         // setSelectedUser("");
       },
       (apiError) => {
+        enqueueSnackbar(apiError, { variant: "error" });
         console.log(apiError);
       },
       {
