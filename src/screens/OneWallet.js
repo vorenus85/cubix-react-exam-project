@@ -117,15 +117,11 @@ function OneWallet() {
     navigate(`/user/${event}`);
   };
 
-  const handleDeleteAccess = (event) => {
+  const handleDeleteAccess = (data) => {
     showModal(MODALS.CONFIRM, {
-      message:
-        "Are you sure you want to delete this user access to this wallet?",
+      message: `Are you sure you want to delete ${data.name} access to this wallet?`,
       onConfirmed: () => {
-        console.log(
-          "Delete user access to this wallet, then refresh module",
-          event
-        );
+        onDeleteAccess(data);
       },
     });
   };
@@ -149,6 +145,41 @@ function OneWallet() {
       },
     });
   }
+
+  const onAddAccess = (user) => {
+    const walletID = id;
+    doApiCall(
+      AXIOS_METHOD.POST,
+      `/wallet/${walletID}/grant_access`,
+      (data) => {
+        reloadWallet();
+      },
+      (apiError) => {
+        console.log(apiError);
+      },
+      {
+        user_id: user.id,
+      }
+    );
+  };
+
+  const onDeleteAccess = (user) => {
+    const walletID = id;
+
+    doApiCall(
+      AXIOS_METHOD.POST,
+      `/wallet/${walletID}/remove_access`,
+      (data) => {
+        reloadWallet();
+      },
+      (apiError) => {
+        console.log(apiError);
+      },
+      {
+        user_id: user.id,
+      }
+    );
+  };
 
   if (
     (loading === false && error !== false) ||
@@ -183,7 +214,7 @@ function OneWallet() {
             {loading === false && <BalanceCard balance={wallet?.balance} />}
           </Grid>
         </Grid>
-        <AddAccessToWallet />
+        <AddAccessToWallet onAddAccess={onAddAccess} />
         {loading === false && (
           <UsersWithAccess
             usersWithAccess={wallet?.access || []}
