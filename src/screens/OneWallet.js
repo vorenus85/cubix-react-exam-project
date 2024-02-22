@@ -146,21 +146,8 @@ function OneWallet() {
     });
   }
 
-  const onAddAccess = (user) => {
-    const walletID = id;
-    doApiCall(
-      AXIOS_METHOD.POST,
-      `/wallet/${walletID}/grant_access`,
-      (data) => {
-        reloadWallet();
-      },
-      (apiError) => {
-        console.log(apiError);
-      },
-      {
-        user_id: user.id,
-      }
-    );
+  const onAddAccess = () => {
+    reloadWallet();
   };
 
   const onDeleteAccess = (user) => {
@@ -214,8 +201,8 @@ function OneWallet() {
             {loading === false && <BalanceCard balance={wallet?.balance} />}
           </Grid>
         </Grid>
-        <AddAccessToWallet onAddAccess={onAddAccess} />
-        {loading === false && (
+        <AddAccessToWallet walletId={id} onAddAccess={onAddAccess} />
+        {wallet && (
           <UsersWithAccess
             usersWithAccess={wallet?.access || []}
             handleClick={handleUserClick}

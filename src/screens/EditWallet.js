@@ -31,15 +31,9 @@ function EditWallet() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [wallet, loading, error] = useApi(AXIOS_METHOD.GET, `/wallet/${id}`);
-  const [users, usersLoading, usersError] = useApi(
-    AXIOS_METHOD.POST,
-    `/user/list`,
-    {
-      prefix: "",
-      limit: 10,
-      cursor: "",
-    }
+  const [wallet, loading, error, reloadWallet] = useApi(
+    AXIOS_METHOD.GET,
+    `/wallet/${id}`
   );
 
   const formik = useFormik({
@@ -80,12 +74,31 @@ function EditWallet() {
     showModal(MODALS.CONFIRM, {
       message: "Are you sure you want to delete access to this wallet?",
       onConfirmed: () => {
-        console.log(
-          "Delete user access to this wallet, then refresh module",
-          event
-        );
+        onDeleteAccess(event);
       },
     });
+  };
+
+  const onDeleteAccess = (user) => {
+    const walletID = id;
+
+    doApiCall(
+      AXIOS_METHOD.POST,
+      `/wallet/${walletID}/remove_access`,
+      (data) => {
+        reloadWallet();
+      },
+      (apiError) => {
+        console.log(apiError);
+      },
+      {
+        user_id: user.id,
+      }
+    );
+  };
+
+  const onAddAccess = () => {
+    reloadWallet();
   };
 
   const updateValidFormData = (previousValue) => {
@@ -164,9 +177,9 @@ function EditWallet() {
           <Grid item xs={12} md={6}></Grid>
         </Grid>
 
-        <AddAccessToWallet />
+        <AddAccessToWallet walletId={id} onAddAccess={onAddAccess} />
 
-        {loading === false && wallet && (
+        {wallet && (
           <UsersWithAccess
             usersWithAccess={wallet.access || []}
             handleClick={handleUserClick}

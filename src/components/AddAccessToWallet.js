@@ -9,7 +9,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
 
-export function AddAccessToWallet({ onAddAccess }) {
+export function AddAccessToWallet({ walletId, onAddAccess }) {
   const [selectedUser, setSelectedUser] = useState("");
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
@@ -48,8 +48,20 @@ export function AddAccessToWallet({ onAddAccess }) {
   }, [loading]);
 
   const handleGrantAccess = () => {
-    onAddAccess(selectedUser);
-    setSelectedUser("");
+    doApiCall(
+      AXIOS_METHOD.POST,
+      `/wallet/${walletId}/grant_access`,
+      (_unusedData) => {
+        onAddAccess();
+        // setSelectedUser("");
+      },
+      (apiError) => {
+        console.log(apiError);
+      },
+      {
+        user_id: selectedUser?.id,
+      }
+    );
   };
 
   return (
@@ -101,7 +113,12 @@ export function AddAccessToWallet({ onAddAccess }) {
           />
         </Stack>
         <Stack>
-          <Button variant="outlined" size="large" onClick={handleGrantAccess}>
+          <Button
+            variant="outlined"
+            size="large"
+            onClick={handleGrantAccess}
+            disabled={!selectedUser}
+          >
             Add to wallet
           </Button>
         </Stack>
