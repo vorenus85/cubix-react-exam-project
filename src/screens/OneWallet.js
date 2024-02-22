@@ -14,6 +14,7 @@ import {
   Stack,
   IconButton,
   LinearProgress,
+  Chip,
 } from "@mui/material";
 
 import moment from "moment";
@@ -232,7 +233,16 @@ function OneWallet() {
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell>{transaction?.created_by?.name}</TableCell>
-                    <TableCell>${transaction?.amount}</TableCell>
+                    <TableCell>
+                      <Chip
+                        color={transaction?.amount < 0 ? "error" : "success"}
+                        label={
+                          transaction?.amount < 0
+                            ? `-$${transaction?.amount * -1}`
+                            : `$${transaction?.amount}`
+                        }
+                      ></Chip>
+                    </TableCell>
                     <TableCell>{transaction?.title}</TableCell>
                     <TableCell align="right">
                       {moment(transaction?.created_at).format("YYYY.MM.DD.")}
