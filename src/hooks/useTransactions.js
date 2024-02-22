@@ -17,10 +17,8 @@ export default function useTransactions(wallet_id = "", limit = 5) {
         (responseData) => {
           setTransactions((oldTransactions) => {
             if (oldTransactions === false || newCursor === "") {
-              console.log("első 5");
               return responseData?.transactions;
             }
-            console.log("hozzáfűz");
             return [...oldTransactions, ...responseData?.transactions];
           });
           setCursor(responseData?.cursor);
@@ -46,7 +44,6 @@ export default function useTransactions(wallet_id = "", limit = 5) {
   );
 
   const resetList = useCallback(() => {
-    console.log("resetList");
     apiCallCallback("");
   }, [apiCallCallback]);
 
