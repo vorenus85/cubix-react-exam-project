@@ -18,24 +18,40 @@ function UsersWithAccess({ usersWithAccess = [], handleClick, handleDelete }) {
         alignItems="flex-start"
         spacing={2}
       >
-        {usersWithAccess.map((user) => (
-          <Chip
-            color={isSameUser(user?.id) ? "primary" : "info"}
-            variant={isSameUser(user?.id) ? "filled" : "outlined"}
-            key={user?.id}
-            label={user?.name}
-            onClick={() => {
-              if (isSameUser(user?.id)) {
-                handleClick(user?.id);
-              }
-            }}
-            onDelete={() => {
-              if (isAdmin || isSameUser(user?.id)) {
-                handleDelete(user?.id);
-              }
-            }}
-          />
-        ))}
+        {usersWithAccess.map((user) =>
+          isAdmin || isSameUser(user?.id) ? (
+            <Chip
+              className={!isAdmin ? "hide-delete" : ""}
+              color={isSameUser(user?.id) ? "primary" : "info"}
+              variant={isSameUser(user?.id) ? "filled" : "outlined"}
+              key={user?.id}
+              label={user?.name}
+              onClick={() => {
+                if (isSameUser(user?.id)) {
+                  handleClick(user?.id);
+                }
+              }}
+              onDelete={() => {
+                if (isAdmin || isSameUser(user?.id)) {
+                  handleDelete(user);
+                }
+              }}
+            />
+          ) : (
+            <Chip
+              className={!isAdmin ? "hide-delete" : ""}
+              color={isSameUser(user?.id) ? "primary" : "info"}
+              variant={isSameUser(user?.id) ? "filled" : "outlined"}
+              key={user?.id}
+              label={user?.name}
+              onClick={() => {
+                if (isSameUser(user?.id)) {
+                  handleClick(user?.id);
+                }
+              }}
+            />
+          )
+        )}
       </Stack>
     </Stack>
   );
