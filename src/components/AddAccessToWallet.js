@@ -4,41 +4,52 @@ import {
   TextField,
   Button,
   Autocomplete,
+  CircularProgress,
 } from "@mui/material";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
 
-const allUsers = [
-  {
-    label: "User 1",
-    id: 1,
-  },
-  {
-    label: "User 2",
-    id: 2,
-  },
-  {
-    label: "User 3",
-    id: 3,
-  },
-  {
-    label: "User 4",
-    id: 4,
-  },
-  {
-    label: "User 5",
-    id: 5,
-  },
-  {
-    label: "User 6",
-    id: 6,
-  },
-];
+export function AddAccessToWallet({ onAddAccess }) {
+  const [selectedUser, setSelectedUser] = useState("");
+  const [open, setOpen] = useState(false);
+  const [options, setOptions] = useState([]);
+  const loading = open && options.length === 0;
 
-export function AddAccessToWallet() {
-  const [user, setUser] = useState("");
+  useEffect(() => {
+    let active = true;
+
+    if (!loading) {
+      return undefined;
+    }
+
+    (async () => {
+      if (active) {
+        doApiCall(
+          AXIOS_METHOD.POST,
+          "/user/list",
+          (data) => {
+            setOptions([...data?.users]);
+          },
+          (apiError) => {
+            console.log(apiError);
+          },
+          {
+            prefix: "",
+            limit: 100,
+            cursor: "",
+          }
+        );
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [loading]);
 
   const handleGrantAccess = () => {
-    console.log("grant access to ", user);
+    onAddAccess(selectedUser);
+    setSelectedUser("");
   };
 
   return (
@@ -53,25 +64,44 @@ export function AddAccessToWallet() {
         spacing={2}
       >
         <Stack>
-          {/*
-              // todo async autocomplete: https://codesandbox.io/p/sandbox/asynchronous-material-demo-forked-70eff?file=%2Fdemo.js
-            */}
           <Autocomplete
+            id="asynchronous-demo"
+            sx={{ width: 300 }}
+            open={open}
             onChange={(event, newValue) => {
-              setUser(newValue);
+              setSelectedUser(newValue);
             }}
-            disablePortal
-            id="combo-box-demo"
-            options={allUsers}
-            sx={{ width: 200 }}
-            size="small"
+            onOpen={() => {
+              setOpen(true);
+            }}
+            onClose={() => {
+              setOpen(false);
+            }}
+            isOptionEqualToValue={(option, value) => option.name === value.name}
+            getOptionLabel={(option) => option.name}
+            options={options}
+            loading={loading}
             renderInput={(params) => (
-              <TextField {...params} label="start typing..." />
+              <TextField
+                {...params}
+                label="start typing..."
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <React.Fragment>
+                      {loading ? (
+                        <CircularProgress color="inherit" size={20} />
+                      ) : null}
+                      {params.InputProps.endAdornment}
+                    </React.Fragment>
+                  ),
+                }}
+              />
             )}
           />
         </Stack>
         <Stack>
-          <Button variant="outlined" onClick={handleGrantAccess}>
+          <Button variant="outlined" size="large" onClick={handleGrantAccess}>
             Add to wallet
           </Button>
         </Stack>
