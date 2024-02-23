@@ -12,6 +12,7 @@ import React from "react";
 import * as yup from "yup";
 import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const validationSchema = yup.object({
   name: yup
@@ -21,6 +22,7 @@ const validationSchema = yup.object({
 });
 
 function NewWallet() {
+  const { setSessionUser } = useAuth();
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -36,6 +38,11 @@ function NewWallet() {
         "/wallet",
         (data) => {
           setSubmitting(false);
+          setSessionUser((previousValue) => {
+            previousValue.wallets.push({ id: data.id, name: data.name });
+            return { ...previousValue };
+          });
+
           navigate(`/wallet/edit/${data.id}`);
         },
         (apiError) => {

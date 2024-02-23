@@ -17,6 +17,7 @@ import { AXIOS_METHOD, doApiCall, useApi } from "../hooks/useApi";
 import { useModals, MODALS } from "../hooks/useModal";
 import { AddAccessToWallet } from "../components/AddAccessToWallet";
 import { useSnackbar } from "notistack";
+import { useAuth } from "../hooks/useAuth";
 
 const validationSchema = yup.object({
   name: yup
@@ -26,9 +27,9 @@ const validationSchema = yup.object({
 });
 
 function EditWallet() {
+  const { setSessionUser } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { showModal } = useModals();
-  const [setValidFormData] = useState(null);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -61,7 +62,13 @@ function EditWallet() {
         doApiCall(
           AXIOS_METHOD.DELETE,
           `/wallet/${id}`,
-          (_unusedResponse) => {
+          (response) => {
+            setSessionUser((previousValue) => {
+              previousValue.wallets = previousValue.wallets.filter((wallet) => {
+                return wallet.id !== response.id;
+              });
+              return { ...previousValue };
+            });
             navigate("/");
             enqueueSnackbar("Wallet successfully deleted!", {
               variant: "success",
