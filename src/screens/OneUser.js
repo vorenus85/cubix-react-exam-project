@@ -19,10 +19,11 @@ import WalletsWithAccess from "../components/WalletsWithAccess";
 import { useNavigate, useParams } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { AXIOS_METHOD, useApi } from "../hooks/useApi";
+import { AXIOS_METHOD, doApiCall, useApi } from "../hooks/useApi";
 import UserInfoCard from "../components/UserInfoCard";
 import { useAuth } from "../hooks/useAuth";
 import { MODALS, useModals } from "../hooks/useModal";
+import { enqueueSnackbar } from "notistack";
 
 const transactions = [
   {
@@ -59,25 +60,21 @@ function OneUser() {
   const { showModal } = useModals();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { sessionUser, isAdmin } = useAuth();
+  const { sessionUser, setSessionUser, isAdmin } = useAuth();
   const isSameUser = (id) => {
     return sessionUser.id === id;
   };
   const [userData, loading, error] = useApi(AXIOS_METHOD.GET, `/user/${id}`);
 
-  const handleWalletClick = (event) => {
-    navigate(`/wallet/${event}`);
+  const handleWalletClick = (walletId) => {
+    navigate(`/wallet/${walletId}`);
   };
 
-  const handleDeleteAccess = (event) => {
+  const handleDeleteAccess = (wallet) => {
     showModal(MODALS.CONFIRM, {
-      message:
-        "Are you sure you want to delete this user access to this wallet?",
+      message: `Are you sure you want to delete access to ${wallet.name} wallet?`,
       onConfirmed: () => {
-        console.log(
-          "Delete user access to this wallet, then refresh module",
-          event
-        );
+        onDeleteAccess(wallet);
       },
     });
   };
@@ -101,6 +98,31 @@ function OneUser() {
       },
     });
   }
+
+  const onDeleteAccess = (wallet) => {
+    const walletID = wallet.id;
+
+    doApiCall(
+      AXIOS_METHOD.POST,
+      `/wallet/${walletID}/remove_access`,
+      (response) => {
+        setSessionUser((previousValue) => {
+          previousValue.wallets = previousValue.wallets.filter((wallet) => {
+            return wallet.id !== response.id;
+          });
+          return { ...previousValue };
+        });
+
+        enqueueSnackbar("Access successfully removed!", { variant: "success" });
+      },
+      (apiError) => {
+        enqueueSnackbar(apiError, { variant: "error" });
+      },
+      {
+        user_id: id,
+      }
+    );
+  };
 
   if (loading === false && error !== false) {
     navigate("/404");

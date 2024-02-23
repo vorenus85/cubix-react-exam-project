@@ -124,8 +124,8 @@ function OneWallet() {
     });
   };
 
-  const handleUserClick = (event) => {
-    navigate(`/user/${event}`);
+  const handleUserClick = (userId) => {
+    navigate(`/user/${userId}`);
   };
 
   const handleDeleteAccess = (data) => {

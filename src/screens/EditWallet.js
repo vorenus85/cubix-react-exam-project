@@ -9,7 +9,6 @@ import {
   LinearProgress,
 } from "@mui/material";
 import { useFormik } from "formik";
-import React, { useState } from "react";
 import * as yup from "yup";
 import UsersWithAccess from "../components/UsersWithAccess";
 import { useNavigate, useParams } from "react-router-dom";
@@ -51,8 +50,8 @@ function EditWallet() {
     },
   });
 
-  const handleUserClick = (event) => {
-    navigate(`/user/${event}`);
+  const handleUserClick = (userId) => {
+    navigate(`/user/${userId}`);
   };
 
   const onDeleteWallet = () => {

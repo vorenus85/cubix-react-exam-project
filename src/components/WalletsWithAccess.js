@@ -1,8 +1,6 @@
 import { Typography, Stack, Chip } from "@mui/material";
 import { useAuth } from "../hooks/useAuth";
 function WalletsWithAccess({ walletsWithAccess, handleClick, handleDelete }) {
-  const { isAdmin } = useAuth();
-
   return (
     <Stack>
       <Typography variant="h5" mb={2} mt={4}>
@@ -22,9 +20,7 @@ function WalletsWithAccess({ walletsWithAccess, handleClick, handleDelete }) {
             label={wallet.name}
             onClick={() => handleClick(wallet.id)}
             onDelete={() => {
-              if (!isAdmin) {
-                handleDelete(wallet.id);
-              }
+              handleDelete(wallet);
             }}
           />
         ))}
