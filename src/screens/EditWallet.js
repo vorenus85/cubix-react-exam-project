@@ -46,7 +46,7 @@ function EditWallet() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      updateValidFormData(values);
+      saveWalletData(values);
     },
   });
 
@@ -63,6 +63,9 @@ function EditWallet() {
           `/wallet/${id}`,
           (_unusedResponse) => {
             navigate("/");
+            enqueueSnackbar("Wallet successfully deleted!", {
+              variant: "success",
+            });
           },
           (apiError) => {
             enqueueSnackbar(apiError, { variant: "error" });
@@ -89,6 +92,7 @@ function EditWallet() {
       `/wallet/${walletID}/remove_access`,
       (data) => {
         reloadWallet();
+        enqueueSnackbar("Access successfully removed!", { variant: "success" });
       },
       (apiError) => {
         enqueueSnackbar(apiError, { variant: "error" });
@@ -103,12 +107,20 @@ function EditWallet() {
     reloadWallet();
   };
 
-  const updateValidFormData = (previousValue) => {
-    setValidFormData({
-      ...previousValue,
-    });
-
-    console.log("handle edit  wallet");
+  const saveWalletData = ({ description }) => {
+    doApiCall(
+      AXIOS_METHOD.PATCH,
+      `/wallet/${id}`,
+      (data) => {
+        enqueueSnackbar("Wallett data successfully updated", {
+          variant: "success",
+        });
+      },
+      (apiError) => {
+        enqueueSnackbar(apiError, { variant: "error" });
+      },
+      { description }
+    );
   };
 
   if (loading === false && error !== false) {
@@ -133,6 +145,7 @@ function EditWallet() {
             {wallet && (
               <Stack component="form" onSubmit={formik.handleSubmit}>
                 <TextField
+                  disabled
                   size="small"
                   variant="outlined"
                   fullWidth

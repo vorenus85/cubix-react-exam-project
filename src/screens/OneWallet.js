@@ -61,6 +61,9 @@ function OneWallet() {
       (_unusedResponse) => {
         resetList();
         reloadWallet();
+        enqueueSnackbar("Transaction successfully deleted!", {
+          variant: "success",
+        });
       },
       (apiError) => {
         enqueueSnackbar(apiError, { variant: "error" });
@@ -75,6 +78,9 @@ function OneWallet() {
       (_unusedResponse) => {
         resetList();
         reloadWallet();
+        enqueueSnackbar("Transaction successfully edited!", {
+          variant: "success",
+        });
       },
       (apiError) => {
         enqueueSnackbar(apiError, { variant: "error" });
@@ -99,6 +105,9 @@ function OneWallet() {
       (_unusedResponse) => {
         resetList();
         reloadWallet();
+        enqueueSnackbar("Transaction successfully added!", {
+          variant: "success",
+        });
       },
       (apiError) => {
         enqueueSnackbar(apiError, { variant: "error" });
@@ -158,8 +167,9 @@ function OneWallet() {
     doApiCall(
       AXIOS_METHOD.POST,
       `/wallet/${walletID}/remove_access`,
-      (data) => {
+      (_unusedData) => {
         reloadWallet();
+        enqueueSnackbar("Access successfully removed!", { variant: "success" });
       },
       (apiError) => {
         enqueueSnackbar(apiError, { variant: "error" });
