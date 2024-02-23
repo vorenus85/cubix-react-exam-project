@@ -26,7 +26,7 @@ function Users() {
 
   const [search, setSearch] = useState();
   const [users, loading, error] = useApi(AXIOS_METHOD.POST, `/user/list`, {
-    prefix: "",
+    prefix: search,
     limit: 10,
     cursor: "",
   });
@@ -34,10 +34,7 @@ function Users() {
   const handleSearchUser = (event) => {
     const searchParam = event.target.value;
 
-    if (searchParam.length > 1) {
-      setSearch(event.target.value);
-      console.log("search user", event.target.value);
-    }
+    setSearch(searchParam);
   };
 
   if (loading === false && error !== false) {
