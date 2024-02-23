@@ -82,7 +82,7 @@ export function AddAccessToWallet({ walletId, onAddAccess }) {
           <Autocomplete
             freeSolo
             value={selectedUser}
-            id="asynchronous-demo"
+            id="asynchronous-userlist"
             sx={{ width: 300 }}
             open={open}
             onChange={(event, newValue, reason) => {
