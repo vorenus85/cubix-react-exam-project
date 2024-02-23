@@ -29,8 +29,10 @@ import { AddAccessToWallet } from "../components/AddAccessToWallet";
 import { WalletInfoCard } from "../components/WalletInfoCard";
 import { useAuth } from "../hooks/useAuth";
 import useTransactions from "../hooks/useTransactions";
+import { useSnackbar } from "notistack";
 
 function OneWallet() {
+  const { enqueueSnackbar } = useSnackbar();
   const { showModal } = useModals();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -61,7 +63,7 @@ function OneWallet() {
         reloadWallet();
       },
       (apiError) => {
-        console.log(apiError);
+        enqueueSnackbar(apiError, { variant: "error" });
       }
     );
   };
@@ -75,7 +77,7 @@ function OneWallet() {
         reloadWallet();
       },
       (apiError) => {
-        console.log(apiError);
+        enqueueSnackbar(apiError, { variant: "error" });
       },
       {
         title,
@@ -99,7 +101,7 @@ function OneWallet() {
         reloadWallet();
       },
       (apiError) => {
-        console.log(apiError);
+        enqueueSnackbar(apiError, { variant: "error" });
       },
       data
     );
@@ -160,7 +162,7 @@ function OneWallet() {
         reloadWallet();
       },
       (apiError) => {
-        console.log(apiError);
+        enqueueSnackbar(apiError, { variant: "error" });
       },
       {
         user_id: user.id,

@@ -33,7 +33,7 @@ export function AddAccessToWallet({ walletId, onAddAccess }) {
             setOptions([...data?.users]);
           },
           (apiError) => {
-            console.log(apiError);
+            enqueueSnackbar(apiError, { variant: "error" });
           },
           {
             prefix: "",
@@ -55,11 +55,10 @@ export function AddAccessToWallet({ walletId, onAddAccess }) {
       `/wallet/${walletId}/grant_access`,
       (_unusedData) => {
         onAddAccess();
-        // setSelectedUser("");
+        enqueueSnackbar("Access successfully granted!", { variant: "success" });
       },
       (apiError) => {
         enqueueSnackbar(apiError, { variant: "error" });
-        console.log(apiError);
       },
       {
         user_id: selectedUser?.id,

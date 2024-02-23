@@ -16,6 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AXIOS_METHOD, doApiCall, useApi } from "../hooks/useApi";
 import { useModals, MODALS } from "../hooks/useModal";
 import { AddAccessToWallet } from "../components/AddAccessToWallet";
+import { useSnackbar } from "notistack";
 
 const validationSchema = yup.object({
   name: yup
@@ -25,6 +26,7 @@ const validationSchema = yup.object({
 });
 
 function EditWallet() {
+  const { enqueueSnackbar } = useSnackbar();
   const { showModal } = useModals();
   const [setValidFormData] = useState(null);
 
@@ -63,18 +65,18 @@ function EditWallet() {
             navigate("/");
           },
           (apiError) => {
-            console.log(apiError);
+            enqueueSnackbar(apiError, { variant: "error" });
           }
         );
       },
     });
   };
 
-  const handleDeleteAccess = (event) => {
+  const handleDeleteAccess = (data) => {
     showModal(MODALS.CONFIRM, {
-      message: "Are you sure you want to delete access to this wallet?",
+      message: `Are you sure you want to delete ${data.name} access to this wallet?`,
       onConfirmed: () => {
-        onDeleteAccess(event);
+        onDeleteAccess(data);
       },
     });
   };
@@ -89,7 +91,7 @@ function EditWallet() {
         reloadWallet();
       },
       (apiError) => {
-        console.log(apiError);
+        enqueueSnackbar(apiError, { variant: "error" });
       },
       {
         user_id: user.id,
@@ -117,18 +119,18 @@ function EditWallet() {
   return (
     <Stack pb={5}>
       <MyAppBar />
-      {loading === true && (
-        <Grid item xs={12}>
-          <LinearProgress />
-        </Grid>
-      )}
+
+      <Grid item xs={12}>
+        {loading === true && <LinearProgress />}
+      </Grid>
+
       <Container maxWidth="md">
         <Typography variant="h4" my={2} mt={6}>
           Edit wallet
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
-            {loading === false && wallet && (
+            {wallet && (
               <Stack component="form" onSubmit={formik.handleSubmit}>
                 <TextField
                   size="small"
