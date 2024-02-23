@@ -47,7 +47,7 @@ export function AddAccessToWallet({ walletId, onAddAccess }) {
     return () => {
       active = false;
     };
-  }, [loading]);
+  }, [loading, enqueueSnackbar, setOptions]);
 
   const handleGrantAccess = () => {
     doApiCall(
@@ -56,6 +56,7 @@ export function AddAccessToWallet({ walletId, onAddAccess }) {
       (_unusedData) => {
         onAddAccess();
         enqueueSnackbar("Access successfully granted!", { variant: "success" });
+        setSelectedUser("");
       },
       (apiError) => {
         enqueueSnackbar(apiError, { variant: "error" });
@@ -79,11 +80,17 @@ export function AddAccessToWallet({ walletId, onAddAccess }) {
       >
         <Stack>
           <Autocomplete
+            freeSolo
+            value={selectedUser}
             id="asynchronous-demo"
             sx={{ width: 300 }}
             open={open}
-            onChange={(event, newValue) => {
-              setSelectedUser(newValue);
+            onChange={(event, newValue, reason) => {
+              if (reason === "reset" && newValue === "") {
+                // Do nothing
+              } else {
+                setSelectedUser(newValue);
+              }
             }}
             onOpen={() => {
               setOpen(true);
@@ -92,7 +99,7 @@ export function AddAccessToWallet({ walletId, onAddAccess }) {
               setOpen(false);
             }}
             isOptionEqualToValue={(option, value) => option.name === value.name}
-            getOptionLabel={(option) => option.name}
+            getOptionLabel={(option) => option?.name || ""}
             options={options}
             loading={loading}
             renderInput={(params) => (
