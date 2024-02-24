@@ -271,7 +271,9 @@ function OneWallet() {
                     </TableCell>
                     <TableCell>{transaction?.title}</TableCell>
                     <TableCell align="right">
-                      {moment(transaction?.created_at).format("YYYY.MM.DD.")}
+                      {moment(transaction?.created_at.toString()).format(
+                        "YYYY.MM.DD. HH:MM"
+                      )}
                     </TableCell>
                     <TableCell align="right">
                       {(isAdmin || isSameUser(transaction?.created_by?.id)) && (
