@@ -17,7 +17,7 @@ export function UserButton({ id, name }) {
           variant="outlined"
           startIcon={<PersonIcon />}
           onClick={() => {
-            navigate(`/user/${id}`);
+            navigate(`/my-transactions`);
           }}
         >
           {name}

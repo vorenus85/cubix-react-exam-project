@@ -10,7 +10,7 @@ import OneWallet from "./screens/OneWallet";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import Users from "./screens/Users";
-import OneUser from "./screens/OneUser";
+import MyTransactions from "./screens/MyTransactions";
 import EditWallet from "./screens/EditWallet";
 import NewWallet from "./screens/NewWallet";
 import Providers from "./Providers";
@@ -74,11 +74,11 @@ function App() {
           }
         ></Route>
         <Route
-          path="/user/:id"
+          path="/my-transactions"
           exact
           element={
             <ProtectedPage>
-              <OneUser />
+              <MyTransactions />
             </ProtectedPage>
           }
         ></Route>

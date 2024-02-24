@@ -50,10 +50,6 @@ function EditWallet() {
     },
   });
 
-  const handleUserClick = (userId) => {
-    navigate(`/user/${userId}`);
-  };
-
   const onDeleteWallet = () => {
     showModal(MODALS.CONFIRM, {
       message: "Are you sure you want to delete this wallet?",
@@ -203,7 +199,6 @@ function EditWallet() {
         {wallet && (
           <UsersWithAccess
             usersWithAccess={wallet.access || []}
-            handleClick={handleUserClick}
             handleDelete={handleDeleteAccess}
           />
         )}

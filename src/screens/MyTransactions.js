@@ -59,24 +59,14 @@ const transactions = [
 function OneUser() {
   const { showModal } = useModals();
   const navigate = useNavigate();
-  const { id } = useParams();
-  const { sessionUser, setSessionUser, isAdmin } = useAuth();
-  const isSameUser = (id) => {
-    return sessionUser.id === id;
-  };
-  const [userData, loading, error] = useApi(AXIOS_METHOD.GET, `/user/${id}`);
+  const { sessionUser } = useAuth();
+  const [userData, loading, error] = useApi(
+    AXIOS_METHOD.GET,
+    `/user/${sessionUser.id}`
+  );
 
   const handleWalletClick = (walletId) => {
     navigate(`/wallet/${walletId}`);
-  };
-
-  const handleDeleteAccess = (wallet) => {
-    showModal(MODALS.CONFIRM, {
-      message: `Are you sure you want to delete access to ${wallet.name} wallet?`,
-      onConfirmed: () => {
-        onDeleteAccess(wallet);
-      },
-    });
   };
 
   function onTransactionDelete(id) {
@@ -98,31 +88,6 @@ function OneUser() {
       },
     });
   }
-
-  const onDeleteAccess = (wallet) => {
-    const walletID = wallet.id;
-
-    doApiCall(
-      AXIOS_METHOD.POST,
-      `/wallet/${walletID}/remove_access`,
-      (response) => {
-        setSessionUser((previousValue) => {
-          previousValue.wallets = previousValue.wallets.filter((wallet) => {
-            return wallet.id !== response.id;
-          });
-          return { ...previousValue };
-        });
-
-        enqueueSnackbar("Access successfully removed!", { variant: "success" });
-      },
-      (apiError) => {
-        enqueueSnackbar(apiError, { variant: "error" });
-      },
-      {
-        user_id: id,
-      }
-    );
-  };
 
   if (loading === false && error !== false) {
     navigate("/404");
@@ -149,7 +114,6 @@ function OneUser() {
         <WalletsWithAccess
           walletsWithAccess={sessionUser.wallets}
           handleClick={handleWalletClick}
-          handleDelete={handleDeleteAccess}
         />
 
         <Typography variant="h5" my={2} mt={6}>
@@ -179,29 +143,25 @@ function OneUser() {
                     {moment(transaction?.date).format("YYYY.MM.DD.")}
                   </TableCell>
                   <TableCell align="right">
-                    {(isAdmin || isSameUser(transaction?.created_by?.id)) && (
-                      <div>
-                        <IconButton
-                          aria-label="delete"
-                          onClick={() => onTransactionDelete(transaction?.id)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                        <IconButton
-                          aria-label="edit"
-                          color="primary"
-                          onClick={() =>
-                            onTransactionEdit({
-                              id: transaction?.id,
-                              amount: transaction?.amount,
-                              title: transaction?.title,
-                            })
-                          }
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </div>
-                    )}
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => onTransactionDelete(transaction?.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label="edit"
+                      color="primary"
+                      onClick={() =>
+                        onTransactionEdit({
+                          id: transaction?.id,
+                          amount: transaction?.amount,
+                          title: transaction?.title,
+                        })
+                      }
+                    >
+                      <EditIcon />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}

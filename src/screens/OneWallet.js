@@ -124,10 +124,6 @@ function OneWallet() {
     });
   };
 
-  const handleUserClick = (userId) => {
-    navigate(`/user/${userId}`);
-  };
-
   const handleDeleteAccess = (data) => {
     showModal(MODALS.CONFIRM, {
       message: `Are you sure you want to delete ${data.name} access to this wallet?`,
@@ -216,7 +212,6 @@ function OneWallet() {
         {wallet && (
           <UsersWithAccess
             usersWithAccess={wallet?.access || []}
-            handleClick={handleUserClick}
             handleDelete={handleDeleteAccess}
           />
         )}
