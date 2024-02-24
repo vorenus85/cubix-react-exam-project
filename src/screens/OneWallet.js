@@ -102,12 +102,14 @@ function OneWallet() {
     doApiCall(
       AXIOS_METHOD.PUT,
       `/transactions`,
-      (_unusedResponse) => {
-        resetList();
-        reloadWallet();
-        enqueueSnackbar("Transaction successfully added!", {
-          variant: "success",
-        });
+      (response) => {
+        setTimeout(() => {
+          transactions.push(response);
+          reloadWallet();
+          enqueueSnackbar("Transaction successfully added!", {
+            variant: "success",
+          });
+        }, 250);
       },
       (apiError) => {
         enqueueSnackbar(apiError, { variant: "error" });
