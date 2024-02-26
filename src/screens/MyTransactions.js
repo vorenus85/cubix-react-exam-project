@@ -59,7 +59,7 @@ function MyTransactions() {
           wallet.balance = calculateTotalAmount(mineWalletTransactions);
         },
         (apiError) => {
-          console.log(apiError);
+          setError(true);
           setLoading(false);
         },
         {
@@ -221,16 +221,17 @@ function MyTransactions() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {transactionsPerWallets.map((wallet) => {
-                  return (
-                    <TransactionsOfOneWallet
-                      key={wallet.id}
-                      row={wallet}
-                      onTransactionDelete={onTransactionDelete}
-                      onTransactionEdit={onTransactionEdit}
-                    />
-                  );
-                })}
+                {transactionsPerWallets &&
+                  transactionsPerWallets.map((wallet) => {
+                    return (
+                      <TransactionsOfOneWallet
+                        key={wallet?.id}
+                        row={wallet}
+                        onTransactionDelete={onTransactionDelete}
+                        onTransactionEdit={onTransactionEdit}
+                      />
+                    );
+                  })}
               </TableBody>
             </Table>
           </TableContainer>
