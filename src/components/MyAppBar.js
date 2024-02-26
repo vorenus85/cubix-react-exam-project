@@ -5,7 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 
 export default function MyAppBar({ showLogin, showRegister }) {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { isAdmin, logout } = useAuth();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -34,9 +34,11 @@ export default function MyAppBar({ showLogin, showRegister }) {
               <Button onClick={() => navigate("/")} color="inherit">
                 Wallets
               </Button>
-              <Button onClick={() => navigate("/users")} color="inherit">
-                Users
-              </Button>
+              {isAdmin && (
+                <Button onClick={() => navigate("/users")} color="inherit">
+                  Users
+                </Button>
+              )}
               <Button onClick={logout} color="inherit">
                 Logout
               </Button>
