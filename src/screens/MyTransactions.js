@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import WalletsWithAccess from "../components/WalletsWithAccess";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { AXIOS_METHOD, doApiCall, useApi } from "../hooks/useApi";
@@ -180,8 +180,7 @@ function MyTransactions() {
   };
 
   if (loading === false && error !== false) {
-    navigate("/404");
-    return null;
+    return <Navigate to="/404" />;
   }
 
   return (

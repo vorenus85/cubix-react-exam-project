@@ -11,7 +11,7 @@ import {
 import { useFormik } from "formik";
 import * as yup from "yup";
 import UsersWithAccess from "../components/UsersWithAccess";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { AXIOS_METHOD, doApiCall, useApi } from "../hooks/useApi";
 import { useModals, MODALS } from "../hooks/useModal";
 import { AddAccessToWallet } from "../components/AddAccessToWallet";
@@ -126,8 +126,7 @@ function EditWallet() {
   };
 
   if (loading === false && error !== false) {
-    navigate("/404");
-    return null;
+    return <Navigate to="/404" />;
   }
 
   return (

@@ -19,11 +19,9 @@ import {
 import { UserButton } from "../components/UserButton";
 import { useState } from "react";
 import { AXIOS_METHOD, useApi } from "../hooks/useApi";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 function Users() {
-  const navigate = useNavigate();
-
   const [search, setSearch] = useState();
   const [users, loading, error] = useApi(AXIOS_METHOD.POST, `/user/list`, {
     prefix: search,
@@ -38,8 +36,7 @@ function Users() {
   };
 
   if (loading === false && error !== false) {
-    navigate("/404");
-    return null;
+    return <Navigate to="/404" />;
   }
 
   return (

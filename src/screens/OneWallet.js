@@ -22,7 +22,7 @@ import BalanceCard from "../components/BalanceCard";
 import UsersWithAccess from "../components/UsersWithAccess";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { useModals, MODALS } from "../hooks/useModal";
 import { AXIOS_METHOD, doApiCall, useApi } from "../hooks/useApi";
 import { AddAccessToWallet } from "../components/AddAccessToWallet";
@@ -34,7 +34,6 @@ import { useSnackbar } from "notistack";
 function OneWallet() {
   const { enqueueSnackbar } = useSnackbar();
   const { showModal } = useModals();
-  const navigate = useNavigate();
   const { id } = useParams();
   const { sessionUser, isAdmin } = useAuth();
   const isSameUser = (id) => {
@@ -182,8 +181,7 @@ function OneWallet() {
     (loading === false && error !== false) ||
     (transactionsLoading === false && transactionsError !== false)
   ) {
-    navigate("/404");
-    return null;
+    return <Navigate to="/404" />;
   }
 
   return (

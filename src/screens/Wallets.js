@@ -8,7 +8,7 @@ import {
   LinearProgress,
 } from "@mui/material";
 import Wallet from "../components/Wallet";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { AXIOS_METHOD, useApi } from "../hooks/useApi";
 import { useAuth } from "../hooks/useAuth";
 
@@ -19,8 +19,7 @@ function Wallets() {
   const [wallets, loading, error] = useApi(AXIOS_METHOD.GET, "/wallets");
 
   if (loading === false && error !== false) {
-    navigate("/404");
-    return null;
+    return <Navigate to="/404" />;
   }
 
   return (
