@@ -31,18 +31,18 @@ export default function ConfirmModal({ onClose, onConfirmed, message }) {
         <Typography variant={"body1"}>{message}</Typography>
       </DialogContent>
       <DialogActions>
+        <Button variant={"outlined"} onClick={onClose}>
+          No
+        </Button>
         <Button
           variant={"contained"}
-          color={"error"}
+          color={"primary"}
           onClick={() => {
             onConfirmed();
             onClose();
           }}
         >
           Yes
-        </Button>
-        <Button variant={"outlined"} onClick={onClose}>
-          No
         </Button>
       </DialogActions>
     </Dialog>
