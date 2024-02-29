@@ -1,7 +1,7 @@
 import { Typography, Stack, Chip } from "@mui/material";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-function UsersWithAccess({ usersWithAccess = [], handleClick, handleDelete }) {
+function UsersWithAccess({ usersWithAccess = [], handleDelete }) {
   const navigate = useNavigate();
   const { isAdmin, sessionUser } = useAuth();
 

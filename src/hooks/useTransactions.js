@@ -19,7 +19,7 @@ export default function useTransactions(wallet_id = "", limit = 5) {
             if (oldTransactions === false || newCursor === "") {
               return responseData?.transactions;
             }
-            return [...oldTransactions, ...responseData?.transactions];
+            return [...oldTransactions, ...(responseData?.transactions || {})];
           });
           setCursor(responseData?.cursor);
           setHasMore(responseData?.has_more);

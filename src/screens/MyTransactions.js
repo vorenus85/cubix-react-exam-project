@@ -22,7 +22,7 @@ import WalletsWithAccess from "../components/WalletsWithAccess";
 import { Navigate, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { AXIOS_METHOD, doApiCall, useApi } from "../hooks/useApi";
+import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
 import UserInfoCard from "../components/UserInfoCard";
 import { useAuth } from "../hooks/useAuth";
 import { MODALS, useModals } from "../hooks/useModal";
@@ -59,6 +59,7 @@ function MyTransactions() {
           wallet.balance = calculateTotalAmount(mineWalletTransactions);
         },
         (apiError) => {
+          console.log(apiError)
           setError(true);
           setLoading(false);
         },
@@ -128,7 +129,7 @@ function MyTransactions() {
     doApiCall(
       AXIOS_METHOD.DELETE,
       `/transaction/${id}`,
-      (_unusedResponse) => {
+      () => {
         setTransactionsPerWallets((wallets) => {
           wallets = removeTransactionById(wallets, id);
 
@@ -159,7 +160,7 @@ function MyTransactions() {
     doApiCall(
       AXIOS_METHOD.PATCH,
       `/transaction/${id}`,
-      (_unusedResponse) => {
+      () => {
         setTransactionsPerWallets((wallets) => {
           wallets = editTransactionById(wallets, id, { title, amount });
 
@@ -220,17 +221,16 @@ function MyTransactions() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {transactionsPerWallets &&
-                  transactionsPerWallets.map((wallet) => {
-                    return (
-                      <TransactionsOfOneWallet
-                        key={wallet?.id}
-                        row={wallet}
-                        onTransactionDelete={onTransactionDelete}
-                        onTransactionEdit={onTransactionEdit}
-                      />
-                    );
-                  })}
+                {transactionsPerWallets?.map((wallet) => {
+                  return (
+                    <TransactionsOfOneWallet
+                      key={wallet?.id}
+                      row={wallet}
+                      onTransactionDelete={onTransactionDelete}
+                      onTransactionEdit={onTransactionEdit}
+                    />
+                  );
+                })}
               </TableBody>
             </Table>
           </TableContainer>

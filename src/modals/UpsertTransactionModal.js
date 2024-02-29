@@ -36,8 +36,8 @@ export default function UpsertTransactionModal({
 
   const formik = useFormik({
     initialValues: {
-      amount: amount ? amount : "",
-      title: title ? title : "",
+      amount: amount || "",
+      title: title || "",
     },
     validationSchema: isAdmin ? validationSchemaForAdmin : validationSchema,
     onSubmit: (values) => {

@@ -57,7 +57,7 @@ function OneWallet() {
     doApiCall(
       AXIOS_METHOD.DELETE,
       `/transaction/${id}`,
-      (_unusedResponse) => {
+      () => {
         resetList();
         reloadWallet();
         enqueueSnackbar("Transaction successfully deleted!", {
@@ -74,7 +74,7 @@ function OneWallet() {
     doApiCall(
       AXIOS_METHOD.PATCH,
       `/transaction/${id}`,
-      (_unusedResponse) => {
+      () => {
         resetList();
         reloadWallet();
         enqueueSnackbar("Transaction successfully edited!", {
@@ -164,7 +164,7 @@ function OneWallet() {
     doApiCall(
       AXIOS_METHOD.POST,
       `/wallet/${walletID}/remove_access`,
-      (_unusedData) => {
+      () => {
         reloadWallet();
         enqueueSnackbar("Access successfully removed!", { variant: "success" });
       },

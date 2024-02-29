@@ -64,7 +64,7 @@ function Register() {
       doApiCall(
         AXIOS_METHOD.POST,
         "/reg",
-        (_unusedRegData) => {
+        () => {
           doApiCall(
             AXIOS_METHOD.POST,
             "/login",

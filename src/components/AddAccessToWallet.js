@@ -30,7 +30,7 @@ export function AddAccessToWallet({ walletId, onAddAccess }) {
           AXIOS_METHOD.POST,
           "/user/list",
           (data) => {
-            setOptions([...data?.users]);
+            setOptions([...(data?.users || {})]);
           },
           (apiError) => {
             enqueueSnackbar(apiError, { variant: "error" });
@@ -53,7 +53,7 @@ export function AddAccessToWallet({ walletId, onAddAccess }) {
     doApiCall(
       AXIOS_METHOD.POST,
       `/wallet/${walletId}/grant_access`,
-      (_unusedData) => {
+      () => {
         onAddAccess();
         enqueueSnackbar("Access successfully granted!", { variant: "success" });
         setSelectedUser("");

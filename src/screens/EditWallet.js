@@ -92,7 +92,7 @@ function EditWallet() {
     doApiCall(
       AXIOS_METHOD.POST,
       `/wallet/${walletID}/remove_access`,
-      (data) => {
+      () => {
         reloadWallet();
         enqueueSnackbar("Access successfully removed!", { variant: "success" });
       },
@@ -113,8 +113,8 @@ function EditWallet() {
     doApiCall(
       AXIOS_METHOD.PATCH,
       `/wallet/${id}`,
-      (data) => {
-        enqueueSnackbar("Wallett data successfully updated", {
+      () => {
+        enqueueSnackbar("Wallet data successfully updated", {
           variant: "success",
         });
       },

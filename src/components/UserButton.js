@@ -1,4 +1,4 @@
-import { Button, Chip, Stack } from "@mui/material";
+import { Button, Chip } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
