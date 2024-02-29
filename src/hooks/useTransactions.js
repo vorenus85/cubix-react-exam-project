@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { AXIOS_METHOD, doApiCall } from "./useApi";
+import { doApiCall } from "./useApi";
+import { AXIOS_METHOD } from "../constants";
 
 export default function useTransactions(wallet_id = "", limit = 5) {
   const [cursor, setCursor] = useState("");

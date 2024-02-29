@@ -9,8 +9,9 @@ import {
 } from "@mui/material";
 import Wallet from "../components/Wallet";
 import { Navigate, useNavigate } from "react-router-dom";
-import { AXIOS_METHOD, useApi } from "../hooks/useApi";
+import { useApi } from "../hooks/useApi";
 import { useAuth } from "../hooks/useAuth";
+import { AXIOS_METHOD } from "../constants";
 
 function Wallets() {
   const navigate = useNavigate();

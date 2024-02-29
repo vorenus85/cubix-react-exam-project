@@ -7,8 +7,9 @@ import {
   CircularProgress,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
+import { doApiCall } from "../hooks/useApi";
 import { useSnackbar } from "notistack";
+import { AXIOS_METHOD } from "../constants";
 
 export function AddAccessToWallet({ walletId, onAddAccess }) {
   const { enqueueSnackbar } = useSnackbar();

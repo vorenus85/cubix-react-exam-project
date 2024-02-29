@@ -1,15 +1,10 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import ConfirmModal from "../modals/ConfirmModal";
 import UpsertTransactionModal from "../modals/UpsertTransactionModal";
+import { MODALS } from "../constants";
 
 const ModalContext = React.createContext();
 ModalContext.displayName = "ModalContext";
-
-export const MODALS = {
-  NONE: "NONE",
-  CONFIRM: "CONFIRM",
-  TRANSACTION: "TRANSACTION",
-};
 
 export function Modals() {
   return (

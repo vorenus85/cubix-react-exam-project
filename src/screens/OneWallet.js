@@ -23,13 +23,14 @@ import UsersWithAccess from "../components/UsersWithAccess";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Navigate, useParams } from "react-router-dom";
-import { useModals, MODALS } from "../hooks/useModal";
-import { AXIOS_METHOD, doApiCall, useApi } from "../hooks/useApi";
+import { useModals } from "../hooks/useModal";
+import { doApiCall, useApi } from "../hooks/useApi";
 import { AddAccessToWallet } from "../components/AddAccessToWallet";
 import { WalletInfoCard } from "../components/WalletInfoCard";
 import { useAuth } from "../hooks/useAuth";
 import useTransactions from "../hooks/useTransactions";
 import { useSnackbar } from "notistack";
+import { AXIOS_METHOD, MODALS } from "../constants";
 
 function OneWallet() {
   const { enqueueSnackbar } = useSnackbar();

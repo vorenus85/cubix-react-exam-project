@@ -1,11 +1,12 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { setApiToken } from "./useApi";
+import { AUTH_TOKEN } from "../constants";
 
 const AuthContext = React.createContext();
 AuthContext.displayName = "AuthContext";
 
 export function AuthContextProvider({ children }) {
-  const [authToken, setAuthToken] = useState(false);
+  const [authToken, setAuthToken] = useState(AUTH_TOKEN);
   const [sessionUser, setSessionUser] = useState({});
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -14,6 +15,7 @@ export function AuthContextProvider({ children }) {
       setApiToken(loginResult.token);
       setAuthToken(loginResult.token);
       setSessionUser(loginResult.user);
+      localStorage.setItem("authToken", loginResult.token);
       setIsAdmin(loginResult.user.name === "admin");
     },
     [setAuthToken, setSessionUser]
@@ -21,6 +23,7 @@ export function AuthContextProvider({ children }) {
 
   const logout = useCallback(() => {
     handleLoginResult({ token: false, user: {} });
+    localStorage.removeItem("authToken");
   }, [handleLoginResult]);
 
   return (

@@ -10,9 +10,10 @@ import {
 import { useFormik } from "formik";
 import React from "react";
 import * as yup from "yup";
-import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
+import { doApiCall } from "../hooks/useApi";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { AXIOS_METHOD } from "../constants";
 
 const validationSchema = yup.object({
   name: yup

@@ -12,11 +12,12 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import UsersWithAccess from "../components/UsersWithAccess";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { AXIOS_METHOD, doApiCall, useApi } from "../hooks/useApi";
-import { useModals, MODALS } from "../hooks/useModal";
+import { doApiCall, useApi } from "../hooks/useApi";
+import { useModals } from "../hooks/useModal";
 import { AddAccessToWallet } from "../components/AddAccessToWallet";
 import { useSnackbar } from "notistack";
 import { useAuth } from "../hooks/useAuth";
+import { AXIOS_METHOD, MODALS } from "../constants";
 
 const validationSchema = yup.object({
   name: yup

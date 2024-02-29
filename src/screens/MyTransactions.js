@@ -22,14 +22,15 @@ import WalletsWithAccess from "../components/WalletsWithAccess";
 import { Navigate, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
+import { doApiCall } from "../hooks/useApi";
 import UserInfoCard from "../components/UserInfoCard";
 import { useAuth } from "../hooks/useAuth";
-import { MODALS, useModals } from "../hooks/useModal";
+import { useModals } from "../hooks/useModal";
 import { enqueueSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { AXIOS_METHOD, MODALS } from "../constants";
 
 function MyTransactions() {
   const { showModal } = useModals();
@@ -59,7 +60,7 @@ function MyTransactions() {
           wallet.balance = calculateTotalAmount(mineWalletTransactions);
         },
         (apiError) => {
-          console.log(apiError)
+          console.log(apiError);
           setError(true);
           setLoading(false);
         },

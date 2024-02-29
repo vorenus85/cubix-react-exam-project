@@ -1,17 +1,8 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
+import { AUTH_TOKEN, BASE_URL } from "../constants";
 
-const BASE_URL = "https://janos-perge-react-wallet.janos-perge.workers.dev";
-
-export const AXIOS_METHOD = {
-  GET: "GET",
-  POST: "POST",
-  PUT: "PUT",
-  PATCH: "PATCH",
-  DELETE: "DELETE",
-};
-
-let authToken = false;
+let authToken = AUTH_TOKEN;
 
 export function setApiToken(newToken) {
   authToken = newToken;

@@ -18,8 +18,9 @@ import {
 } from "@mui/material";
 import { UserButton } from "../components/UserButton";
 import { useState } from "react";
-import { AXIOS_METHOD, useApi } from "../hooks/useApi";
+import { useApi } from "../hooks/useApi";
 import { Navigate } from "react-router-dom";
+import { AXIOS_METHOD } from "../constants";
 
 function Users() {
   const [search, setSearch] = useState();

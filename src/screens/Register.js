@@ -18,7 +18,8 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
+import { doApiCall } from "../hooks/useApi";
+import { AXIOS_METHOD } from "../constants";
 
 const validationSchema = yup.object({
   termsAndConditions: yup
