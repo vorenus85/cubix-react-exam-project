@@ -31,15 +31,14 @@ function App() {
       <Routes>
         <Route
           path="/"
-          exact
           element={
             <ProtectedPage>
               <Wallets />
             </ProtectedPage>
           }
         ></Route>
-        <Route path="/login" exact element={<Login />}></Route>
-        <Route path="/register" exact element={<Register />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/register" element={<Register />}></Route>
         <Route
           path="/wallet/:id"
           element={
@@ -66,7 +65,6 @@ function App() {
         />
         <Route
           path="/users"
-          exact
           element={
             <ProtectedPage>
               <Users />
@@ -75,15 +73,14 @@ function App() {
         ></Route>
         <Route
           path="/my-transactions"
-          exact
           element={
             <ProtectedPage>
               <MyTransactions />
             </ProtectedPage>
           }
         ></Route>
-        <Route path="/404" exact element={<NotFoundScreen />} />
-        <Route path="*" exact element={<NotFoundScreen />} />
+        <Route path="/404" element={<NotFoundScreen />} />
+        <Route path="*" element={<NotFoundScreen />} />
       </Routes>
     </Providers>
   );
