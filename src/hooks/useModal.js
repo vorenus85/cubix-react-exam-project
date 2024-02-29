@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import ConfirmModal from "../modals/ConfirmModal";
 import UpsertTransactionModal from "../modals/UpsertTransactionModal";
 
@@ -46,7 +46,12 @@ export function ModalContextProvider({ children }) {
     [setCurrentModal, setModalProps]
   );
   return (
-    <ModalContext.Provider value={{ currentModal, showModal, modalProps }}>
+    <ModalContext.Provider
+      value={useMemo(
+        () => ({ currentModal, showModal, modalProps }),
+        [currentModal, showModal, modalProps]
+      )}
+    >
       {children}
       <Modals />
     </ModalContext.Provider>
