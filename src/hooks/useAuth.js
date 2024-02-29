@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { setApiToken } from "./useApi";
 
 const AuthContext = React.createContext();
@@ -14,7 +14,7 @@ export function AuthContextProvider({ children }) {
       setApiToken(loginResult.token);
       setAuthToken(loginResult.token);
       setSessionUser(loginResult.user);
-      setIsAdmin(loginResult.user.name === "admin" ? true : false);
+      setIsAdmin(loginResult.user.name === "admin");
     },
     [setAuthToken, setSessionUser]
   );
@@ -25,14 +25,24 @@ export function AuthContextProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{
-        authToken,
-        sessionUser,
-        handleLoginResult,
-        isAdmin,
-        logout,
-        setSessionUser,
-      }}
+      value={useMemo(
+        () => ({
+          authToken,
+          sessionUser,
+          handleLoginResult,
+          isAdmin,
+          logout,
+          setSessionUser,
+        }),
+        [
+          authToken,
+          sessionUser,
+          handleLoginResult,
+          isAdmin,
+          logout,
+          setSessionUser,
+        ]
+      )}
     >
       {children}
     </AuthContext.Provider>
