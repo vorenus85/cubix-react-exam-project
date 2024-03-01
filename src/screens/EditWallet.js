@@ -63,6 +63,10 @@ function EditWallet() {
               previousValue.wallets = previousValue.wallets.filter((wallet) => {
                 return wallet.id !== response.id;
               });
+              localStorage.setItem(
+                "sessionUser",
+                JSON.stringify({ ...previousValue })
+              );
               return { ...previousValue };
             });
             navigate("/");

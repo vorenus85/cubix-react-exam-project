@@ -9,6 +9,7 @@ export const AXIOS_METHOD = {
 };
 
 export const AUTH_TOKEN = localStorage.getItem("authToken") || false;
+export const SESSION_USER = localStorage.getItem("sessionUser") || {};
 
 export const MODALS = {
   NONE: "NONE",

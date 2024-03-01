@@ -41,6 +41,10 @@ function NewWallet() {
           setSubmitting(false);
           setSessionUser((previousValue) => {
             previousValue.wallets.push({ id: data.id, name: data.name });
+            localStorage.setItem(
+              "sessionUser",
+              JSON.stringify({ ...previousValue })
+            );
             return { ...previousValue };
           });
 
