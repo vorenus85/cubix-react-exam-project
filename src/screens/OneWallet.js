@@ -13,7 +13,6 @@ import {
   Button,
   Stack,
   IconButton,
-  LinearProgress,
   Chip,
 } from "@mui/material";
 
@@ -31,6 +30,7 @@ import { useAuth } from "../hooks/useAuth";
 import useTransactions from "../hooks/useTransactions";
 import { useSnackbar } from "notistack";
 import { AXIOS_METHOD, MODALS } from "../constants";
+import LoadingBlock from "../components/LoadingBlock";
 
 function OneWallet() {
   const { enqueueSnackbar } = useSnackbar();
@@ -189,11 +189,7 @@ function OneWallet() {
     <Stack pb={5}>
       <MyAppBar />
       {loading === true ||
-        (transactionsLoading === true && (
-          <Grid item xs={12}>
-            <LinearProgress />
-          </Grid>
-        ))}
+        (transactionsLoading === true && <LoadingBlock></LoadingBlock>)}
       <Container maxWidth="md">
         <Grid container spacing={2} mt={6}>
           <Grid item xs={12} sm={6} md={6}>
@@ -204,7 +200,9 @@ function OneWallet() {
               description={wallet?.description}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={3}></Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <span></span>
+          </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <BalanceCard balance={wallet?.balance} />
           </Grid>
@@ -304,13 +302,15 @@ function OneWallet() {
             </TableBody>
           </Table>
         </TableContainer>
-        <Grid item xs={12}>
-          {hasMore && !loading && (
-            <Button onClick={onMore} fullWidth>
-              Load more
-            </Button>
-          )}
-        </Grid>
+        {hasMore && !loading && (
+          <Grid container>
+            <Grid item xs={12}>
+              <Button onClick={onMore} fullWidth>
+                Load more
+              </Button>
+            </Grid>
+          </Grid>
+        )}
       </Container>
     </Stack>
   );

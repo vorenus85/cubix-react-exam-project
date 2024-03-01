@@ -14,13 +14,13 @@ import {
   Card,
   CardContent,
   TextField,
-  LinearProgress,
 } from "@mui/material";
 import { UserButton } from "../components/UserButton";
 import { useState } from "react";
 import { useApi } from "../hooks/useApi";
 import { Navigate } from "react-router-dom";
 import { AXIOS_METHOD } from "../constants";
+import LoadingBlock from "../components/LoadingBlock";
 
 function Users() {
   const [search, setSearch] = useState();
@@ -43,11 +43,7 @@ function Users() {
   return (
     <Stack pb={5}>
       <MyAppBar />
-      {loading === true && (
-        <Grid item xs={12}>
-          <LinearProgress />
-        </Grid>
-      )}
+      {loading === true && <LoadingBlock></LoadingBlock>}
       <Container maxWidth="md">
         <Grid container mb={4} mt={6}>
           <Grid item xs={12} sm={6}>

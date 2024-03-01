@@ -6,7 +6,6 @@ import {
   TextField,
   Grid,
   Button,
-  LinearProgress,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -18,6 +17,7 @@ import { AddAccessToWallet } from "../components/AddAccessToWallet";
 import { useSnackbar } from "notistack";
 import { useAuth } from "../hooks/useAuth";
 import { AXIOS_METHOD, MODALS } from "../constants";
+import LoadingBlock from "../components/LoadingBlock";
 
 const validationSchema = yup.object({
   name: yup
@@ -138,10 +138,7 @@ function EditWallet() {
     <Stack pb={5}>
       <MyAppBar />
 
-      <Grid item xs={12}>
-        {loading === true && <LinearProgress />}
-      </Grid>
-
+      {loading === true && <LoadingBlock></LoadingBlock>}
       <Container maxWidth="md">
         <Typography variant="h4" my={2} mt={6}>
           Edit wallet

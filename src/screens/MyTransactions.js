@@ -12,7 +12,6 @@ import {
   TableBody,
   Stack,
   IconButton,
-  LinearProgress,
   Collapse,
   Box,
   Chip,
@@ -31,6 +30,7 @@ import React, { useEffect, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { AXIOS_METHOD, MODALS } from "../constants";
+import LoadingBlock from "../components/LoadingBlock";
 
 function MyTransactions() {
   const { showModal } = useModals();
@@ -188,11 +188,7 @@ function MyTransactions() {
   return (
     <Stack pb={5}>
       <MyAppBar />
-      {loading === true && (
-        <Grid item xs={12}>
-          <LinearProgress />
-        </Grid>
-      )}
+      {loading === true && <LoadingBlock></LoadingBlock>}
       <Container maxWidth="md">
         <Grid container spacing={2} mt={6}>
           <Grid item xs={12} sm={6} md={6}>
