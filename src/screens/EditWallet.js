@@ -42,8 +42,8 @@ function EditWallet() {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: wallet?.name,
-      description: wallet?.description,
+      name: wallet?.name ? wallet?.name : "",
+      description: wallet?.description ? wallet?.description : "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -155,7 +155,7 @@ function EditWallet() {
                   id="name"
                   name="name"
                   label="Name"
-                  value={formik.values.name}
+                  value={formik.values?.name}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   error={formik.touched.name && !!formik.errors.name}
@@ -169,7 +169,7 @@ function EditWallet() {
                   id="description"
                   name="description"
                   label="Description"
-                  value={formik.values.description}
+                  value={formik.values?.description}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   margin="normal"
