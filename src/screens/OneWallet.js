@@ -185,11 +185,19 @@ function OneWallet() {
     return <Navigate to="/404" />;
   }
 
+  if (loading === true) {
+    return (
+      <Stack pb={5}>
+        <MyAppBar />
+        <LoadingBlock></LoadingBlock>
+      </Stack>
+    );
+  }
+
   return (
     <Stack pb={5}>
       <MyAppBar />
-      {loading === true ||
-        (transactionsLoading === true && <LoadingBlock></LoadingBlock>)}
+      {transactionsLoading === true && <LoadingBlock></LoadingBlock>}
       <Container maxWidth="md">
         <Grid container spacing={2} mt={6}>
           <Grid item xs={12} sm={6} md={6}>

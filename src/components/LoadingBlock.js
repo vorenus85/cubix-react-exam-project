@@ -3,7 +3,7 @@ export default function LoadingBlock() {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <LinearProgress />
+        <LinearProgress></LinearProgress>
       </Grid>
     </Grid>
   );
