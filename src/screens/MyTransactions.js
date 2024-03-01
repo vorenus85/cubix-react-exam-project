@@ -44,36 +44,50 @@ function MyTransactions() {
     setLoading(true);
     const wallets = sessionUser.wallets;
 
-    wallets.forEach((wallet) => {
-      wallet.transactions = [];
-      doApiCall(
-        AXIOS_METHOD.POST,
-        `/transactions`,
-        (response) => {
-          const mineWalletTransactions = response?.transactions.filter(
-            (transaction) => {
-              return sessionUser.id === transaction.created_by.id;
+    const fetchTransactions = async () => {
+      const promises = wallets.map((wallet) => {
+        return new Promise((resolve, reject) => {
+          doApiCall(
+            AXIOS_METHOD.POST,
+            `/transactions`,
+            (response) => {
+              const mineWalletTransactions = response?.transactions.filter(
+                (transaction) => {
+                  return sessionUser.id === transaction.created_by.id;
+                }
+              );
+              wallet.transactions = [...mineWalletTransactions];
+              wallet.numberOfTransactions = mineWalletTransactions.length;
+              wallet.balance = calculateTotalAmount(mineWalletTransactions);
+              resolve();
+            },
+            (apiError) => {
+              console.log(apiError);
+              setError(true);
+              setLoading(false);
+              reject(apiError);
+            },
+            {
+              wallet_id: wallet.id,
+              limit: 100,
+              cursor: "",
             }
           );
-          wallet.transactions = [...mineWalletTransactions];
-          wallet.numberOfTransactions = mineWalletTransactions.length;
-          wallet.balance = calculateTotalAmount(mineWalletTransactions);
-        },
-        (apiError) => {
-          console.log(apiError);
-          setError(true);
-          setLoading(false);
-        },
-        {
-          wallet_id: wallet.id,
-          limit: 100,
-          cursor: "",
-        }
-      );
-    });
+        });
+      });
 
-    setTransactionsPerWallets([...wallets]);
-    setLoading(false);
+      try {
+        await Promise.all(promises);
+        setTransactionsPerWallets([...wallets]);
+        setLoading(false);
+      } catch (error) {
+        // Handle error if any of the API calls fail
+        console.error("An error occurred while fetching transactions:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchTransactions();
   }, []);
 
   const handleWalletClick = (walletId) => {
