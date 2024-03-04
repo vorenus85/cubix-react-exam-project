@@ -46,7 +46,7 @@ function MyTransactions() {
 
     const fetchTransactions = async () => {
       const promises = wallets.map((wallet) => {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
           doApiCall(
             AXIOS_METHOD.POST,
             `/transactions`,
@@ -56,16 +56,17 @@ function MyTransactions() {
                   return sessionUser.id === transaction.created_by.id;
                 }
               );
-              wallet.transactions = [...mineWalletTransactions];
-              wallet.numberOfTransactions = mineWalletTransactions.length;
-              wallet.balance = calculateTotalAmount(mineWalletTransactions);
-              resolve();
+              resolve({
+                ...wallet,
+                transactions: [...mineWalletTransactions],
+                numberOfTransactions: mineWalletTransactions.length,
+                balance: calculateTotalAmount(mineWalletTransactions),
+              });
             },
             (apiError) => {
-              console.log(apiError);
+              console.error(apiError);
               setError(true);
               setLoading(false);
-              reject(apiError);
             },
             {
               wallet_id: wallet.id,
@@ -77,8 +78,8 @@ function MyTransactions() {
       });
 
       try {
-        await Promise.all(promises);
-        setTransactionsPerWallets([...wallets]);
+        const responses = await Promise.all(promises);
+        setTransactionsPerWallets([...responses]);
         setLoading(false);
       } catch (error) {
         // Handle error if any of the API calls fail
