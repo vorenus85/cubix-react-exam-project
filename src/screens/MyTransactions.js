@@ -79,7 +79,8 @@ function MyTransactions() {
 
       try {
         const responses = await Promise.allSettled(promises);
-        setTransactionsPerWallets([...responses]);
+        const walletResponses = responses.map((response) => response?.value);
+        setTransactionsPerWallets([...walletResponses]);
         setLoading(false);
       } catch (error) {
         // Handle error if any of the API calls fail
