@@ -47,40 +47,38 @@ function MyTransactions() {
     const fetchTransactions = async () => {
       const promises = wallets.map((wallet) => {
         return new Promise((resolve) => {
-          setTimeout(() => {
-            doApiCall(
-              AXIOS_METHOD.POST,
-              `/transactions`,
-              (response) => {
-                const mineWalletTransactions = response?.transactions.filter(
-                  (transaction) => {
-                    return sessionUser.id === transaction.created_by.id;
-                  }
-                );
-                resolve({
-                  ...wallet,
-                  transactions: [...mineWalletTransactions],
-                  numberOfTransactions: mineWalletTransactions.length,
-                  balance: calculateTotalAmount(mineWalletTransactions),
-                });
-              },
-              (apiError) => {
-                console.error(apiError);
-                setError(true);
-                setLoading(false);
-              },
-              {
-                wallet_id: wallet.id,
-                limit: 100,
-                cursor: "",
-              }
-            );
-          }, 100);
+          doApiCall(
+            AXIOS_METHOD.POST,
+            `/transactions`,
+            (response) => {
+              const mineWalletTransactions = response?.transactions.filter(
+                (transaction) => {
+                  return sessionUser.id === transaction.created_by.id;
+                }
+              );
+              resolve({
+                ...wallet,
+                transactions: [...mineWalletTransactions],
+                numberOfTransactions: mineWalletTransactions.length,
+                balance: calculateTotalAmount(mineWalletTransactions),
+              });
+            },
+            (apiError) => {
+              console.error(apiError);
+              setError(true);
+              setLoading(false);
+            },
+            {
+              wallet_id: wallet.id,
+              limit: 100,
+              cursor: "",
+            }
+          );
         });
       });
 
       try {
-        const responses = await Promise.all(promises);
+        const responses = await Promise.allSettled(promises);
         setTransactionsPerWallets([...responses]);
         setLoading(false);
       } catch (error) {
